@@ -1,0 +1,42 @@
+title Muistiinpanon lisääminen, SPA-versio
+
+note over selain:
+käyttäjä syöttää uuden muistiinpanon,
+esimerkiksi "Uusi SPA-muistiinpano",
+ja painaa "Save".
+
+Lomakkeen onsubmit-tapahtumankäsittelijä
+lisää muistiipanon listaan ja piirtää
+listan uudestaan. Vasta tämän jälkeen
+lähetetään lisäys palvelimelle!
+
+POST-pyynnössä on JSON-muodossa
+(Content-type: application/JSON)
+lisätty uusi muistiinpano ja sen
+aikaleima.
+end note
+
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+note right of palvelin
+Tässä kohtaa palvelinpää käsittelee pyynnön,
+eli lisää muistinvaraiseen tietokantaan noten
+"Uusi SPA-muistiinpano" aikaleimoineen.
+Aikaleimaksi tulee tällä kertaa siis
+(oletettavasti) selaimen pään aikaleima, eikä
+palvelimen pään, kuten lomakeversiossa.
+end note
+
+palvelin-->selain: 201 Created + [{"message":"note created"}]
+note over selain:
+JSON-kuittaus HTTP-paluukoodilla 201 Created
+Palvelin siis kuittaa, että lisäys meni ok. 
+Kuittaus viedään selaimen konsolille.
+Muuta ei tarvitsekaan tehdä, koska 
+lisätty muistiinpano on jo renderöity.
+end note
+note over selain:
+Aurinko hymyilee aina, joten virheen-
+käsittelyä ei tehdä.
+end note
+
