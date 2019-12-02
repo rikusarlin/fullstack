@@ -161,7 +161,9 @@ const App = () => {
               setNotificationMessage(
                 `Updated phone number of ${personObject.name}`
               )
-              setTimeout(() => {
+              setNewName('')
+              setNewNumber('')              
+                  setTimeout(() => {
                 setNotificationMessage(null)
               }, 5000)    
             })
@@ -171,8 +173,6 @@ const App = () => {
                 setErrorMessage(null)
               }, 5000)    
             })    
-          setNewName('')
-          setNewNumber('')              
         } else {
           console.log(`Not adding ${newName}  since it is already added to the phonebook`)
         }
@@ -192,7 +192,9 @@ const App = () => {
           setNotificationMessage(
             `Added ${personObject.name}`
           )
-          setTimeout(() => {
+          setNewName('')
+          setNewNumber('')
+              setTimeout(() => {
             setNotificationMessage(null)
           }, 5000)    
         })
@@ -202,8 +204,6 @@ const App = () => {
             setErrorMessage(null)
           }, 5000)    
         })
-      setNewName('')
-      setNewNumber('')
     }
   }
 
