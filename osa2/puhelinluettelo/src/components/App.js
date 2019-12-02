@@ -62,7 +62,7 @@ const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handleNumb
 
 const Filter = ({filterValue,handleFilterChange}) => {
     return (
-        <div>filter shown with <input value={filterValue} onChange={handleFilterChange}></input></div>
+        <div>filter persons with <input value={filterValue} onChange={handleFilterChange}></input></div>
     )
 }
 
@@ -165,6 +165,12 @@ const App = () => {
                 setNotificationMessage(null)
               }, 5000)    
             })
+            .catch(error => {
+              setErrorMessage(error.response.data.error)
+              setTimeout(() => {
+                setErrorMessage(null)
+              }, 5000)    
+            })    
           setNewName('')
           setNewNumber('')              
         } else {
@@ -188,6 +194,12 @@ const App = () => {
           )
           setTimeout(() => {
             setNotificationMessage(null)
+          }, 5000)    
+        })
+        .catch(error => {
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
           }, 5000)    
         })
       setNewName('')
