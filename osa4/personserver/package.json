@@ -8,7 +8,7 @@
     "watch": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "build:ui": "rm -rf build && cd ../fullstack/osa2/puhelinluettelo && npm run build --prod && cp -r build ../../../personserver/",
+    "build:ui": "rm -rf build && cd ../../osa2/puhelinluettelo && npm run build --prod && cp -r build ../../osa4/personserver/",
     "deploy": "git push master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "logs:prod": "heroku logs --tail"

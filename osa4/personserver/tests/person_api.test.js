@@ -33,7 +33,7 @@ test('persons are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test('all notes are returned', async () => {
+test('all persons are returned', async () => {
   const response = await api.get('/api/persons')
 
   expect(response.body.length).toBe(initialPersons.length)
