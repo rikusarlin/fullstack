@@ -57,28 +57,37 @@ describe('insert new blog', () => {
   test('number of blogs increases when a new blog is added', async () => {
     let response = await api.get('/api/blogs')
     const blogsBefore = response.body.length
-    const blog = new Blog({
+    const blog = {
       title:'Use cases considered harmful',
       author:'A.J.H Simons',
       url:'https://ieeexplore.ieee.org/document/779012',
       likes:30
-    })
-    await blog.save()
+    }
+    await api.post('/api/blogs').send(blog).expect(201).expect('Content-Type', /application\/json/)
     response = await api.get('/api/blogs')
     const blogsAfter = response.body.length
     expect(blogsAfter).toBe(blogsBefore+1)
   })
   test('an inserted blog can be found after addition', async () => {
-    const blog = new Blog({
+    const blog = {
       title:'Use cases considered harmful',
       author:'A.J.H Simons',
       url:'https://ieeexplore.ieee.org/document/779012',
       likes:30
-    })
-    await blog.save()
+    }
+    await api.post('/api/blogs').send(blog).expect(201).expect('Content-Type', /application\/json/)
     const response = await api.get('/api/blogs')
     const titles = response.body.map(r => r.title)
     expect(titles).toContain('Use cases considered harmful')
+  })
+  test('an inserted blog with no likes result in blog with 0 likes', async () => {
+    const blog = {
+      title:'Use cases considered harmful',
+      author:'A.J.H Simons',
+      url:'https://ieeexplore.ieee.org/document/779012'
+    }
+    const response = await api.post('/api/blogs').send(blog).expect(201).expect('Content-Type', /application\/json/)
+    expect(response.body.likes).toBe(0)
   })
 })
 
