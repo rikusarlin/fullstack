@@ -3,10 +3,10 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "title":"Exploratory testing",
-    "author":"Martin Fowler",
-    "url":"https://martinfowler.com/bliki/ExploratoryTesting.html",
-    "likes":470
+    "title":"Use cases considered harmful",
+    "author":"A.J.H Simons",
+    "url":"https://ieeexplore.ieee.org/document/779012",
+    "likes":30
 }
 
 
