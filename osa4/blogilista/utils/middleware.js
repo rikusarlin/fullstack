@@ -13,9 +13,10 @@ const unknownEndpoint = (request, response) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-  logger.error(error.message)
-  return response.status(400).json({ error: error.message })
-  // eslint-disable-next-line no-unreachable
+  logger.error(error.mesasge)
+  if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
   next(error)
 }
 

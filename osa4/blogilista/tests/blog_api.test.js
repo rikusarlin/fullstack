@@ -89,6 +89,20 @@ describe('insert new blog', () => {
     const response = await api.post('/api/blogs').send(blog).expect(201).expect('Content-Type', /application\/json/)
     expect(response.body.likes).toBe(0)
   })
+  test('title is required', async () => {
+    const blog = {
+      author:'A.J.H Simons',
+      url:'https://ieeexplore.ieee.org/document/779012'
+    }
+    await api.post('/api/blogs').send(blog).expect(400)
+  })
+  test('url is required', async () => {
+    const blog = {
+      title:'Use cases considered harmful',
+      author:'A.J.H Simons',
+    }
+    await api.post('/api/blogs').send(blog).expect(400)
+  })
 })
 
 afterAll(() => {
