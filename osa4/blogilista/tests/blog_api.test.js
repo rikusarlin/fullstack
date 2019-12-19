@@ -106,6 +106,52 @@ describe('delete blog', () => {
   })
 })
 
+describe('update blog', () => {
+  test('update number of likes in blog', async () => {
+    const blogsAtStart = await helper.notesInDb()
+    const blogToUpdate = blogsAtStart[0]
+    const likesBeforeUpdate = blogToUpdate.likes
+    blogToUpdate.likes ++
+    await api.put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blogToUpdate)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    const resultBlog = await api
+      .get(`/api/blogs/${blogToUpdate.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    expect(resultBlog.body.likes).toBe(likesBeforeUpdate+1)
+  })
+  test('fails with 404 status when called with non-existing but valid id', async () => {
+    const blogsAtStart = await helper.notesInDb()
+    var blogToUpdate = blogsAtStart[0]
+    await api
+      .put('/api/blogs/5dfa698896cfe676450a2916')
+      .send(blogToUpdate)
+      .expect(404)
+  })
+  test('invalid id results in 400 status', async () => {
+    const blogsAtStart = await helper.notesInDb()
+    var blogToUpdate = blogsAtStart[0]
+    await api
+      .put('/api/blogs/3457896543')
+      .send(blogToUpdate)
+      .expect(400)
+  })
+  test('update without title results in 400', async () => {
+    const blogsAtStart = await helper.notesInDb()
+    var blogToUpdate = blogsAtStart[0]
+    delete blogToUpdate.title
+    await api.put(`/api/blogs/${blogToUpdate.id}`).send(blogToUpdate).expect(400)
+  })
+  test('update without url results in 400', async () => {
+    const blogsAtStart = await helper.notesInDb()
+    var blogToUpdate = blogsAtStart[0]
+    delete blogToUpdate.url
+    await api.put(`/api/blogs/${blogToUpdate.id}`).send(blogToUpdate).expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

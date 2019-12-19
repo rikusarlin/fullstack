@@ -48,4 +48,34 @@ blogsRouter.delete('/:id', async (req, res, next) => {
   }
 })
 
+blogsRouter.put('/:id', async (req, res, next) => {
+  if(typeof req.body.title === 'undefined'){
+    return res.status(400).json({ error:'title is required' })
+  }
+  if(typeof req.body.url === 'undefined'){
+    return res.status(400).json({ error:'url is required' })
+  }
+  let blog = {
+    title: req.body.title,
+    author: req.body.author,
+    url: req.body.url,
+    likes: req.body.likes
+  }
+  if(typeof req.body.likes === 'undefined'){
+    blog.likes = 0
+  }
+
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog,
+      { new: true, runValidators: false, context: 'query', useFindAndModify:false })
+    if(updatedBlog){
+      res.json(updatedBlog.toJSON())
+    } else {
+      res.status(404).end()
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = blogsRouter
