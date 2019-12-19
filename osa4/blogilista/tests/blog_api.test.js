@@ -1,33 +1,17 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const helper = require('./test_helper')
 const app = require('../app')
 const Blog = require('../models/blog')
 
 const api = supertest(app)
 
-const initialBlogs = [
-  {
-    title: 'Kela, Jumalasta seuraava',
-    author: 'Riku Sarlin',
-    url: 'https://sinetti.kela.fi/blogs/Kela_jumalasta_seuraava',
-    likes: 23
-  },
-  {
-    title: 'Exploratory testing',
-    author: 'Martin Fowler',
-    url: 'https://martinfowler.com/bliki/ExploratoryTesting.html',
-    likes: 470
-  },
-]
-
 beforeEach(async () => {
   await Blog.deleteMany({})
-
-  let blogObject = new Blog(initialBlogs[0])
-  await blogObject.save()
-
-  blogObject = new Blog(initialBlogs[1])
-  await blogObject.save()
+  const blogObjects = helper.initialBlogs
+    .map(blog => new Blog(blog))
+  const promiseArray = blogObjects.map(blog => blog.save())
+  await Promise.all(promiseArray)
 })
 
 describe('fetch all blogs', () => {
@@ -39,7 +23,7 @@ describe('fetch all blogs', () => {
   })
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-    expect(response.body.length).toBe(initialBlogs.length)
+    expect(response.body.length).toBe(helper.initialBlogs.length)
   })
   test('a specific blog is within the returned blogs', async () => {
     const response = await api.get('/api/blogs')
@@ -55,53 +39,70 @@ describe('fetch all blogs', () => {
 
 describe('insert new blog', () => {
   test('number of blogs increases when a new blog is added', async () => {
-    let response = await api.get('/api/blogs')
-    const blogsBefore = response.body.length
-    const blog = {
-      title:'Use cases considered harmful',
-      author:'A.J.H Simons',
-      url:'https://ieeexplore.ieee.org/document/779012',
-      likes:30
-    }
-    await api.post('/api/blogs').send(blog).expect(201).expect('Content-Type', /application\/json/)
-    response = await api.get('/api/blogs')
-    const blogsAfter = response.body.length
-    expect(blogsAfter).toBe(blogsBefore+1)
+    await api.post('/api/blogs').send(helper.newBlog).expect(201).expect('Content-Type', /application\/json/)
+    const blogsAtEnd = await helper.notesInDb()
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length+1)
   })
   test('an inserted blog can be found after addition', async () => {
-    const blog = {
-      title:'Use cases considered harmful',
-      author:'A.J.H Simons',
-      url:'https://ieeexplore.ieee.org/document/779012',
-      likes:30
-    }
-    await api.post('/api/blogs').send(blog).expect(201).expect('Content-Type', /application\/json/)
+    await api.post('/api/blogs').send(helper.newBlog).expect(201).expect('Content-Type', /application\/json/)
     const response = await api.get('/api/blogs')
     const titles = response.body.map(r => r.title)
-    expect(titles).toContain('Use cases considered harmful')
+    expect(titles).toContain(helper.newBlog.title)
   })
   test('an inserted blog with no likes result in blog with 0 likes', async () => {
-    const blog = {
-      title:'Use cases considered harmful',
-      author:'A.J.H Simons',
-      url:'https://ieeexplore.ieee.org/document/779012'
-    }
-    const response = await api.post('/api/blogs').send(blog).expect(201).expect('Content-Type', /application\/json/)
+    delete helper.newBlog.likes
+    const response = await api.post('/api/blogs').send(helper.newBlog).expect(201).expect('Content-Type', /application\/json/)
     expect(response.body.likes).toBe(0)
   })
   test('title is required', async () => {
-    const blog = {
-      author:'A.J.H Simons',
-      url:'https://ieeexplore.ieee.org/document/779012'
-    }
-    await api.post('/api/blogs').send(blog).expect(400)
+    delete helper.newBlog.title
+    await api.post('/api/blogs').send(helper.newBlog).expect(400)
   })
   test('url is required', async () => {
-    const blog = {
-      title:'Use cases considered harmful',
-      author:'A.J.H Simons',
-    }
-    await api.post('/api/blogs').send(blog).expect(400)
+    delete helper.newBlog.url
+    await api.post('/api/blogs').send(helper.newBlog).expect(400)
+  })
+})
+
+describe('view a specific blog', () => {
+  test('succeeds with a valid id', async () => {
+    const blogsAtStart = await helper.notesInDb()
+    const blogToView = blogsAtStart[0]
+    const resultBlog = await api
+      .get(`/api/blogs/${blogToView.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    expect(resultBlog.body).toEqual(blogToView)
+  })
+  test('does not succeed with 404 status when called with non-existing but valid id', async () => {
+    await api
+      .get('/api/blogs/5dfa698896cfe676450a2916')
+      .expect(404)
+  })
+  test('invalid id results in 400 status', async () => {
+    await api
+      .get('/api/blogs/3457896543')
+      .expect(400)
+  })
+})
+
+describe('delete blog', () => {
+  test('succeeds with a valid id', async () => {
+    const blogsAtStart = await helper.notesInDb()
+    const blogToDelete = blogsAtStart[0]
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+  })
+  test('succeeds with 204 status when called with non-existing but valid id', async () => {
+    await api
+      .delete('/api/blogs/5dfa698896cfe676450a2916')
+      .expect(204)
+  })
+  test('invalid id results in 400 status', async () => {
+    await api
+      .delete('/api/blogs/3457896543')
+      .expect(400)
   })
 })
 

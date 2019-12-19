@@ -1,12 +1,3 @@
-post http://localhost:3003/api/blogs
-Content-Type: application/json
+delete http://localhost:3003/api/blogs/5dfb418d8f0e3f1fe503ab2e
 Accept: application/json
-
-{
-    "title":"Use cases considered harmful",
-    "author":"A.J.H Simons",
-    "url":"https://ieeexplore.ieee.org/document/779012",
-    "likes": 30
-}
-
 
