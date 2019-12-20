@@ -1,0 +1,12 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Accept: application/json
+
+{
+    "title":"Exploratory testing",
+    "author":"Martin Fowler",
+    "url":"https://martinfowler.com/bliki/ExploratoryTesting.html",
+    "likes":"33"
+}
+
+

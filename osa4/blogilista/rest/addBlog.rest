@@ -3,9 +3,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "title":"Use cases considered harmful",
-    "author":"A.J.H Simons",
-    "url":"https://ieeexplore.ieee.org/document/779012",
+    "title":"Kela, Jumalasta seuraava",
+    "author":"Riku Sarlin",
+    "url":"https://sinetti.kela.fi/blogs/Kela_jumalasta_seuraava",
     "likes":"33"
 }
 
