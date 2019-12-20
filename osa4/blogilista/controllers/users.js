@@ -11,6 +11,13 @@ usersRouter.post('/', async (request, response, next) => {
   try {
     const body = request.body
 
+    // Validity checks on password... not the hash
+    if(typeof body.password === 'undefined'){
+      return response.status(400).json({ error:'`password` is required' })
+    }
+    if(body.password.length < 3){
+      return response.status(400).json({ error:`password length ${body.password.length} is shorter than the minimum allowed length (3)` })
+    }
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
