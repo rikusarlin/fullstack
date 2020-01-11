@@ -1,6 +1,7 @@
 post http://localhost:3003/api/blogs
 Content-Type: application/json
 Accept: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpa3VzYXJsaW4iLCJpZCI6IjVkZmNkNWNhN2ZmMTVmNGM2NGE1NWEwMCIsImlhdCI6MTU3ODc2OTU2MX0.8KieVSC0XfbvDEH9H_O-3o3yHe41CuuDNfniyj1gG0o
 
 {
     "title":"Kela, Jumalasta seuraava",
