@@ -1,0 +1,13 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Accept: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpa3VzYXJsaW4iLCJpZCI6IjVkZmNkNWNhN2ZmMTVmNGM2NGE1NWEwMCIsImlhdCI6MTU3ODc3MTcxN30.MJLn1tx2rghb62PXpVJqWx5c1vN6MUyzawW0lW4Eck0
+
+{
+    "title":"Micro frontends",
+    "author":"Cam Jackson",
+    "url":"https://martinfowler.com/articles/micro-frontends.html",
+    "likes":"10"
+}
+
+
