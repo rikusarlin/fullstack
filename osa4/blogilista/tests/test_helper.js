@@ -30,7 +30,7 @@ const newUser = {
   password: 'salainen',
 }
 
-const notesInDb = async () => {
+const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
 }
@@ -41,5 +41,5 @@ const usersInDb = async () => {
 }
 
 module.exports = {
-  initialBlogs, newBlog, notesInDb, newUser, usersInDb
+  initialBlogs, newBlog, blogsInDb, newUser, usersInDb
 }
