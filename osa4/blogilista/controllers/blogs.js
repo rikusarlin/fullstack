@@ -12,7 +12,7 @@ blogsRouter.get('/', async (request, response, next) => {
     }
 
     const blogs = await Blog
-      .find({}).populate('user', { username: 1, name: 1 })
+      .find({ 'user':decodedToken.id }).populate('user', { username: 1, name: 1 })
     response.json(blogs)
   } catch (error) {
     next(error)
