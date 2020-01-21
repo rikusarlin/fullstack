@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import blogsService from './services/blogs'
 import loginService from './services/login'
 import './App.css';
@@ -21,8 +21,11 @@ const App = () => {
         username, password,
       })
 
-      const returnedBlogs = await blogsService.getAll(user.token)
-      setBlogs(returnedBlogs)
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+      blogsService.setToken(user.token)
+      setBlogs(await blogsService.getAll())
       setUser(user)
       setUsername('')
       setPassword('')
@@ -38,6 +41,35 @@ const App = () => {
       }, 5000)
     }
   }
+
+  const handleLogout = async (event) => {
+    event.preventDefault()
+    try {
+      window.localStorage.removeItem('loggedBlogappUser')
+      setUser(null)
+      setUsername('')
+      setPassword('')
+      setNotificationMessage('logout successful')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    } catch (exception) {
+      console.log('exception: '+exception)
+      setErrorMessage('error in logut')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogsService.setToken(user.token)
+    }
+  }, [])
 
   const loginForm = () => (
     <div>
@@ -81,7 +113,9 @@ const App = () => {
       {user === null ?
         loginForm() :
         <div>
-          <p>{user.name} logged in</p>
+          <form onSubmit={handleLogout}>
+            <p>{user.name} logged in <button type="submit">logout</button></p>
+          </form>
           {blogList()}
         </div>
       }
