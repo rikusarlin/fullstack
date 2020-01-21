@@ -3,6 +3,7 @@ import blogsService from './services/blogs'
 import loginService from './services/login'
 import './App.css';
 import Blogs from './components/Blogs'
+import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Error from './components/Error'
 
@@ -31,14 +32,14 @@ const App = () => {
       setPassword('')
       setNotificationMessage('login successful')
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        setNotificationMessage(null)
+      }, 3000)
     } catch (exception) {
       console.log('exception: '+exception)
-      setErrorMessage('wrong credentials')
+      setErrorMessage('wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000)
+      }, 3000)
     }
   }
 
@@ -51,14 +52,14 @@ const App = () => {
       setPassword('')
       setNotificationMessage('logout successful')
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        setNotificationMessage(null)
+      }, 3000)
     } catch (exception) {
       console.log('exception: '+exception)
       setErrorMessage('error in logut')
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000)
+      }, 3000)
     }
   }
 
@@ -116,6 +117,12 @@ const App = () => {
           <form onSubmit={handleLogout}>
             <p>{user.name} logged in <button type="submit">logout</button></p>
           </form>
+          <NewBlog 
+            blogs={blogs}
+            setBlogs={setBlogs}
+            setNotificationMessage={setNotificationMessage}
+            setErrorMessage={setErrorMessage}
+          />
           {blogList()}
         </div>
       }
