@@ -5,6 +5,7 @@ import './App.css';
 import Blogs from './components/Blogs'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import Error from './components/Error'
 
 const App = () => {
@@ -14,6 +15,8 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
+
+  const blogFormRef = React.createRef()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -101,14 +104,30 @@ const App = () => {
 
   const blogList = () => (
     <div>
-      <h3>Blogs</h3>
-      <Blogs blogs = {blogs} />
+      <Blogs
+        blogs = {blogs}
+        setBlogs = {setBlogs}
+        setNotificationMessage = {setNotificationMessage}
+        setErrorMessage = {setErrorMessage}
+        blogsService = {blogsService}
+      />
     </div>
+ )
+
+ const blogForm = () => (
+  <Togglable buttonLabel="new blog" ref={blogFormRef}>
+    <NewBlog 
+      setBlogs={setBlogs}
+      setNotificationMessage={setNotificationMessage}
+      setErrorMessage={setErrorMessage}
+      blogFormRef={blogFormRef}
+    />
+  </Togglable>
  )
 
   return (
     <div>
-      <h2>Bloglist</h2>
+      <h2>Blogs</h2>
       <Notification message={notificationMessage}/>
       <Error message={errorMessage}/>
       {user === null ?
@@ -117,12 +136,7 @@ const App = () => {
           <form onSubmit={handleLogout}>
             <p>{user.name} logged in <button type="submit">logout</button></p>
           </form>
-          <NewBlog 
-            blogs={blogs}
-            setBlogs={setBlogs}
-            setNotificationMessage={setNotificationMessage}
-            setErrorMessage={setErrorMessage}
-          />
+          {blogForm()}
           {blogList()}
         </div>
       }

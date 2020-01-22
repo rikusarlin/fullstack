@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import blogsService from '../services/blogs'
 
-const NewBlog = ({blogs, setBlogs, setNotificationMessage, setErrorMessage}) => {
+const NewBlog = ({setBlogs, setNotificationMessage, setErrorMessage, blogFormRef}) => {
   const [title, setTitle] = useState('') 
   const [author, setAuthor] = useState('') 
   const [url, setUrl] = useState('') 
@@ -16,7 +16,9 @@ const NewBlog = ({blogs, setBlogs, setNotificationMessage, setErrorMessage}) => 
 
   const handlePost = async (event) => {
     event.preventDefault()
+    
     try {
+      blogFormRef.current.toggleVisibility()
       const newBlog = {
         title: title,
         author: author,

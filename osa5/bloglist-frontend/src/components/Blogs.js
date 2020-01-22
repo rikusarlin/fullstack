@@ -1,7 +1,7 @@
 import React from 'react'
 import Blog from './Blog'
 
-const Blogs = ({ blogs }) => {
+const Blogs = ({ blogs, setBlogs, setNotificationMessage, setErrorMessage, blogsService }) => {
   // const filteredBlogs = blogs.filter(blog => blog.author.toUpperCase().indexOf(filterValue.toUpperCase()) >= 0)
   const blogList = blogs.map(blog =>
   <Blog
@@ -9,9 +9,16 @@ const Blogs = ({ blogs }) => {
     id={ blog.id }
     title={ blog.title }
     author={ blog.author }
+    likes={ blog.likes }
+    url={ blog.url }
+    user={ blog.user }
+    setBlogs={setBlogs}
+    setNotificationMessage={setNotificationMessage}
+    setErrorMessage={setErrorMessage}
+    blogsService={blogsService}
   />)
   return(
-      <div><ul>{blogList}</ul></div>
+      <div>{blogList}</div>
   )
 }
 
