@@ -3,7 +3,8 @@ import Blog from './Blog'
 
 const Blogs = ({ blogs, setBlogs, setNotificationMessage, setErrorMessage, blogsService }) => {
   // const filteredBlogs = blogs.filter(blog => blog.author.toUpperCase().indexOf(filterValue.toUpperCase()) >= 0)
-  const blogList = blogs.map(blog =>
+  const sortedBlogs = blogs.sort((a,b) => b.likes - a.likes )
+  const blogList = sortedBlogs.map(blog =>
   <Blog
     key={ blog.id }
     id={ blog.id }
