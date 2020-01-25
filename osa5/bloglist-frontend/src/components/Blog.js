@@ -37,6 +37,30 @@ const Blog = ({id, title, author, likes, url, user,
     }
   }
 
+  const handleDelete = async () => {    
+    try {
+      await blogsService.deleteBlog(id)
+      setBlogs(await blogsService.getAll())
+      setNotificationMessage('blog deleted')
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 3000)
+    } catch (exception) {
+      console.log('exception: '+exception)
+      setErrorMessage('error in deleting blog')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+    }
+  }
+
+  const confirmDelete = () => {
+    if(window.confirm("remove blog "+title+" by "+author+"?")){
+      handleDelete()
+    }
+
+  }
+ 
   return(
     <div>
     <div style={hideWhenOpened}>
@@ -49,7 +73,8 @@ const Blog = ({id, title, author, likes, url, user,
               <div onClick={toggleOpened}> &lt; {title} {author}</div><br/>
               {url} <br/>
               {likes} likes <button type="submit">like</button><br/>
-              added by {user.name}
+              added by {user.name}<br/>
+              <button className="deleteButton" type="button" onClick={confirmDelete}>delete</button><br/>
             </div>
           </form>
         </div>
