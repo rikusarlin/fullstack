@@ -3,6 +3,7 @@ import blogsService from './services/blogs'
 import loginService from './services/login'
 import './App.css';
 import Blogs from './components/Blogs'
+import LoginForm from './components/LoginForm'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -75,33 +76,6 @@ const App = () => {
     }
   }, [])
 
-  const loginForm = () => (
-    <div>
-    <h3>Login</h3>
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-    </div>
- )
-
   const blogList = () => (
     <div>
       <Blogs
@@ -131,7 +105,13 @@ const App = () => {
       <Notification message={notificationMessage}/>
       <Error message={errorMessage}/>
       {user === null ?
-        loginForm() :
+        <LoginForm 
+          handleLogin={handleLogin}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          username={username}
+          password={password}
+        /> :
         <div>
           <form onSubmit={handleLogout}>
             <p>{user.name} logged in <button type="submit">logout</button></p>
