@@ -64,10 +64,10 @@ const Blog = ({id, title, author, likes, url, user,
   return(
     <div>
     <div style={hideWhenOpened}>
-      <div className="blog" onClick={toggleOpened}> &gt; {title} {author}</div>
+      <div className="blogClosed" onClick={toggleOpened}> &gt; {title} {author}</div>
     </div>
     <div style={showWhenOpened}>
-       <div className="blog">
+       <div className="blogOpened">
           <form onSubmit={handleLike}>
             <div>
               <div onClick={toggleOpened}> &lt; {title} {author}</div><br/>

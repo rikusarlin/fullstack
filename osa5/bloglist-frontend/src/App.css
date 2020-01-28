@@ -32,7 +32,7 @@ code {
   margin-bottom: 10px;
 }
 
-.blog {
+.blogOpened .blogClosed {
   padding-top: 10px;
   padding-left: 2px;
   border-style: solid;

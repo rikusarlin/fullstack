@@ -18,12 +18,12 @@ test('SimpleBlog renders content', () => {
   )
 
   const titleAndAuthor = component.container.querySelector('.simpleBlog .titleAndAuthor')
-  console.log(prettyDOM(titleAndAuthor))
+  //console.log(prettyDOM(titleAndAuthor))
   expect(titleAndAuthor).toHaveTextContent(
     'Title of Blog by John Author'
   )
   const likes = component.container.querySelector('.simpleBlog .likes')
-  console.log(prettyDOM(likes))
+  //console.log(prettyDOM(likes))
   expect(likes).toHaveTextContent(
     '11'
   )
