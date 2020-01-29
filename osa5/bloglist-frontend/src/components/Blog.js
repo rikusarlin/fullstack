@@ -62,7 +62,7 @@ const Blog = ({id, title, author, likes, url, user,
   }
  
   return(
-    <div>
+    <div className="blogItem">
     <div style={hideWhenOpened}>
       <div className="blogClosed" onClick={toggleOpened}> &gt; {title} {author}</div>
     </div>

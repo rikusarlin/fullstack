@@ -19,7 +19,7 @@ const Blogs = ({ blogs, setBlogs, setNotificationMessage, setErrorMessage, blogs
     blogsService={blogsService}
   />)
   return(
-      <div>{blogList}</div>
+      <div className="blogList">{blogList}</div>
   )
 }
 
