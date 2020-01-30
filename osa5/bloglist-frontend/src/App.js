@@ -3,18 +3,18 @@ import blogsService from './services/blogs'
 import loginService from './services/login'
 import './App.css';
 import Blogs from './components/Blogs'
-import LoginForm from './components/LoginForm'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Error from './components/Error'
+import  { useField } from './hooks'
 
 const App = () => {
   const [ blogs, setBlogs] = useState([])
   const [ notificationMessage, setNotificationMessage ] = useState(null)
   const [ errorMessage, setErrorMessage ] = useState(null)
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const userName = useField('text')
+  const passWord = useField('password')
   const [user, setUser] = useState(null)
 
   const blogFormRef = React.createRef()
@@ -22,6 +22,8 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
+      const username = userName.value
+      const password = passWord.value
       const user = await loginService.login({
         username, password,
       })
@@ -32,8 +34,6 @@ const App = () => {
       blogsService.setToken(user.token)
       setBlogs(await blogsService.getAll())
       setUser(user)
-      setUsername('')
-      setPassword('')
       setNotificationMessage('login successful')
       setTimeout(() => {
         setNotificationMessage(null)
@@ -52,8 +52,6 @@ const App = () => {
     try {
       window.localStorage.removeItem('loggedBlogappUser')
       setUser(null)
-      setUsername('')
-      setPassword('')
       setNotificationMessage('logout successful')
       setTimeout(() => {
         setNotificationMessage(null)
@@ -88,6 +86,23 @@ const App = () => {
     </div>
  )
 
+  const loginForm = () => (
+    <div className="loginForm">
+      <h3>Login</h3>
+      <form onSubmit={handleLogin}>
+        <div>
+            <label htmlFor="Username">Username</label>
+            <input {...userName} />
+        </div>
+        <div>
+          <label htmlFor="Password">Password</label>
+          <input {...passWord} />
+        </div>
+        <button type="submit" className="loginButton">login</button>
+      </form>
+    </div>
+  )
+
  const blogForm = () => (
   <Togglable buttonLabel="new blog" ref={blogFormRef}>
     <NewBlog 
@@ -105,13 +120,8 @@ const App = () => {
       <Notification message={notificationMessage}/>
       <Error message={errorMessage}/>
       {user === null ?
-        <LoginForm 
-          handleLogin={handleLogin}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          username={username}
-          password={password}
-        /> :
+        loginForm()
+        :
         <div>
           <form onSubmit={handleLogout}>
             <p>{user.name} logged in <button type="submit">logout</button></p>
