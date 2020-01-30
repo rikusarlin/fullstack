@@ -3,7 +3,6 @@ import blogsService from './services/blogs'
 import loginService from './services/login'
 import './App.css';
 import Blogs from './components/Blogs'
-import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Error from './components/Error'
@@ -15,6 +14,9 @@ const App = () => {
   const [ errorMessage, setErrorMessage ] = useState(null)
   const userName = useField('text')
   const passWord = useField('password')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
   const [user, setUser] = useState(null)
 
   const blogFormRef = React.createRef()
@@ -34,6 +36,8 @@ const App = () => {
       blogsService.setToken(user.token)
       setBlogs(await blogsService.getAll())
       setUser(user)
+      userName.reset()
+      passWord.reset()
       setNotificationMessage('login successful')
       setTimeout(() => {
         setNotificationMessage(null)
@@ -65,6 +69,34 @@ const App = () => {
     }
   }
 
+  const handlePost = async (event) => {
+    event.preventDefault()
+    
+    try {
+      blogFormRef.current.toggleVisibility()
+      const newBlog = {
+        title: title.value,
+        author: author.value,
+        url: url.value
+      }
+      await blogsService.create(newBlog)
+      setBlogs(await blogsService.getAll())
+      setNotificationMessage('added new blog')
+      url.reset()
+      title.reset()
+      author.reset()
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 3000)
+    } catch (exception) {
+      console.log('exception: '+exception)
+      setErrorMessage('error in adding new blog')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+    }
+  }
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -86,31 +118,46 @@ const App = () => {
     </div>
  )
 
+  const removeProperty = prop => ({ [prop]: _, ...rest }) => rest
+  const removeReset = removeProperty('reset')
+
   const loginForm = () => (
     <div className="loginForm">
       <h3>Login</h3>
       <form onSubmit={handleLogin}>
         <div>
             <label htmlFor="Username">Username</label>
-            <input {...userName} />
+            <input {...removeReset(userName)} /> 
         </div>
         <div>
           <label htmlFor="Password">Password</label>
-          <input {...passWord} />
+          <input {...removeReset(passWord)} />
         </div>
         <button type="submit" className="loginButton">login</button>
       </form>
     </div>
   )
 
- const blogForm = () => (
+  const blogForm = () => (
   <Togglable buttonLabel="new blog" ref={blogFormRef}>
-    <NewBlog 
-      setBlogs={setBlogs}
-      setNotificationMessage={setNotificationMessage}
-      setErrorMessage={setErrorMessage}
-      blogFormRef={blogFormRef}
-    />
+    <div>
+    <h3>New blog</h3>
+    <form onSubmit={handlePost}>
+      <div>
+        <label htmlFor="Title">Title</label>
+        <input {...removeReset(title)}/>
+      </div>
+      <div>
+        <label htmlFor="Author">Author</label>
+        <input {...removeReset(author)}/>
+      </div>
+      <div>
+        <label htmlFor="URL">URL</label>
+        <input {...removeReset(url)}/>
+      </div>
+      <button type="submit">create</button>
+    </form>
+    </div>
   </Togglable>
  )
 
