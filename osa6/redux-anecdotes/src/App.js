@@ -3,6 +3,7 @@ import {voteAnecdote, createAnecdote} from './reducers/anecdoteReducer'
 
 const App = (props) => {
   const anecdotes = props.store.getState()
+  const sortedAnecdotes = anecdotes.sort((a,b) => b.votes - a.votes )
   const store = props.store
 
   const addAnecdote = (event) => {
@@ -21,7 +22,8 @@ const App = (props) => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {
+        sortedAnecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
