@@ -1,5 +1,6 @@
 import React from 'react';
 import {createAnecdote} from '../reducers/anecdoteReducer'
+import {showInfo, hideNotification} from '../reducers/notificationReducer'
 
 const AnecdoteForm = (props) => {
   const store = props.store
@@ -9,6 +10,11 @@ const AnecdoteForm = (props) => {
     store.dispatch(
       createAnecdote(event.target.anecdote.value)
     )
+    store.dispatch(showInfo('Anecdote \''+event.target.anecdote.value+'\' created'))
+    setTimeout(() => {
+      store.dispatch(hideNotification())
+    }, 3000)
+
     event.target.anecdote.value = ''
   }
 
@@ -22,7 +28,6 @@ const AnecdoteForm = (props) => {
           <button type="submit">add</button>
         </form>
         </div>
-        <button>create</button>
       </form>
     </div>
   )
