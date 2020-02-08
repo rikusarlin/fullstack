@@ -1,18 +1,15 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import {createAnecdote} from '../reducers/anecdoteReducer'
 import {showInfo, hideNotification} from '../reducers/notificationReducer'
 
 const AnecdoteForm = (props) => {
-  const store = props.store
-
   const addAnecdote = (event) => {
     event.preventDefault()
-    store.dispatch(
-      createAnecdote(event.target.anecdote.value)
-    )
-    store.dispatch(showInfo('Anecdote \''+event.target.anecdote.value+'\' created'))
+    props.createAnecdote(event.target.anecdote.value)
+    props.showInfo('Anecdote \''+event.target.anecdote.value+'\' created')
     setTimeout(() => {
-      store.dispatch(hideNotification())
+      props.hideNotification()
     }, 3000)
 
     event.target.anecdote.value = ''
@@ -30,4 +27,15 @@ const AnecdoteForm = (props) => {
     </div>
   )
 }
-export default AnecdoteForm
+
+const mapDispatchToProps = {
+  createAnecdote,
+  showInfo,
+  hideNotification
+}
+
+// eksportoidaan suoraan connectin palauttama komponentti
+export default connect(
+  null,
+  mapDispatchToProps
+)(AnecdoteForm)

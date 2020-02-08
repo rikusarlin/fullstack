@@ -1,14 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import {filterData} from '../reducers/filterReducer'
 
 const Filter = (props) => {
-  const store = props.store
- 
+
   const handleChange = (event) => {
     event.preventDefault()
-    store.dispatch(
-      filterData(event.target.value)
-    )
+    props.filterData(event.target.value)
   }
 
 
@@ -23,4 +21,12 @@ const Filter = (props) => {
   )
 }
 
-export default Filter
+const mapDispatchToProps = {
+  filterData
+}
+
+// eksportoidaan suoraan connectin palauttama komponentti
+export default connect(
+  null,
+  mapDispatchToProps
+)(Filter)
