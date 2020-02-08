@@ -4,9 +4,16 @@ import {showInfo, hideNotification} from '../reducers/notificationReducer'
 
 
 const AnecdoteList = (props) => {
-  const anecdotes = props.store.getState().anecdotes
-  const sortedAnecdotes = anecdotes.sort((a,b) => b.votes - a.votes )
   const store = props.store
+  const anecdotes = props.store.getState().anecdotes
+  const filter = props.store.getState().filter
+  var filteredAnecdotes = anecdotes
+  if(filter.filter !== null){
+    filteredAnecdotes = anecdotes.filter(anecdote => {
+      return (anecdote.content.indexOf(filter) !== -1)
+    })
+  }
+  const sortedAnecdotes = filteredAnecdotes.sort((a,b) => b.votes - a.votes )
 
   const vote = (id, content) => {
     store.dispatch(voteAnecdote(id))

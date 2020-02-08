@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {createAnecdote} from '../reducers/anecdoteReducer'
 import {showInfo, hideNotification} from '../reducers/notificationReducer'
 
@@ -21,14 +21,12 @@ const AnecdoteForm = (props) => {
   return (
     <div>
       <h2>create new</h2>
-      <form>
-        <div>
+      <div>
         <form onSubmit={addAnecdote}>
-          <input name="anecdote"/>
-          <button type="submit">add</button>
-        </form>
-        </div>
-      </form>
+           <input name="anecdote"/><br/>
+           <button type="submit">create</button>
+         </form>
+      </div>
     </div>
   )
 }
