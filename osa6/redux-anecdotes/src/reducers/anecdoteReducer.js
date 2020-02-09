@@ -38,8 +38,8 @@ export const createAnecdote = (content) => {
 }
 
 const reducer = (state = initialState, action) => {
-  console.log('state before action: ', state)
-  console.log('action', action)
+  console.log('state before action in filterReducer: ', state)
+  console.log('action in filterReducer', action)
 
   switch(action.type) {
     case 'NEW_ANECDOTE':

@@ -57,7 +57,7 @@ const Notification = (props) => {
 const mapStateToProps = (state) => {
   console.log('Notification, current state: ',state)
   return {
-    notification: state.anecdotes
+    notification: state.notification
   }
 }
 
