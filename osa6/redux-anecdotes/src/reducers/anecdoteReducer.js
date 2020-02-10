@@ -1,59 +1,38 @@
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
-
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
-
-const initialState = anecdotesAtStart.map(asObject)
-
-export const voteAnecdote = (id) => {
+export const voteAnecdote = (content) => {
   return {
     type: 'VOTE',
-    data: { id }
+    data: content
   }
 }
 
 export const createAnecdote = (content) => {
+  console.log('anecdoteReducer, createAnecdote, content: ',content)
   return {
     type: 'NEW_ANECDOTE',
-    data: {
-      content: content,
-      id: getId(),
-      votes: 0
-     }
+    data: content
   }
 }
 
-const reducer = (state = initialState, action) => {
-  console.log('state before action in filterReducer: ', state)
-  console.log('action in filterReducer', action)
+export const initializeAnecdotes = (anecdotes) => {
+  return {
+    type: 'INIT_ANECDOTES',
+    data: anecdotes,
+  }
+}
+const reducer = (state = [], action) => {
+  console.log('state before action in anecdoteReducer: ', state)
+  console.log('action in anecdoteReducer', action)
 
   switch(action.type) {
     case 'NEW_ANECDOTE':
       return state.concat(action.data)
     case 'VOTE':
       const id = action.data.id
-      const anecdoteToVote = state.find(n => n.id === id)
-      const changedAnecdote = { 
-        ...anecdoteToVote, 
-        votes: anecdoteToVote.votes +1 
-      }
       return state.map(anecdote =>
-        anecdote.id !== id ? anecdote : changedAnecdote 
+        anecdote.id !== id ? anecdote : action.data 
       )
+    case 'INIT_ANECDOTES':
+      return action.data
     default:
       return state
   }
