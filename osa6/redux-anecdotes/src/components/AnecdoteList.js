@@ -1,21 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {voteAnecdote} from '../reducers/anecdoteReducer'
-import {showInfo, hideNotification} from '../reducers/notificationReducer'
-import anecdoteService from '../services/anecdotes'
+import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { showInfo } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
   const vote = async (id, content) => {
     const anecdoteToVote = props.anecdotes.find(n => n.id === id)
-    const updatedAnecdote = await anecdoteService.update({ 
-      ...anecdoteToVote, 
-      votes: anecdoteToVote.votes +1 
-    })
-    props.voteAnecdote(updatedAnecdote)
-    props.showInfo('You voted for \''+content+'\'')
-    setTimeout(() => {
-      props.hideNotification()
-    }, 3000)
+    props.voteAnecdote(anecdoteToVote)
+    props.showInfo(`You voted for '${anecdoteToVote.content}'`, 3)
   }
 
   return (
@@ -47,7 +39,6 @@ const anecdotesToShow = ({anecdotes, filter}) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log('AnecdoteList, current state: ',state)
   return {
     anecdotes: anecdotesToShow(state)
   }
@@ -55,8 +46,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   voteAnecdote,
-  showInfo,
-  hideNotification
+  showInfo
 }
 
 // eksportoidaan suoraan connectin palauttama komponentti

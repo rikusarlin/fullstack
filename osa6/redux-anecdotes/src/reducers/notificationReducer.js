@@ -3,14 +3,20 @@ const initialState = {
   message: ''
 }
 
-export const showInfo = (message) => {
-  console.log('somebody just called showInfo')
-  return {
-    type: 'SHOW',
-    data: {
-      message: message,
-      type: 'INFO'
-    }
+export const showInfo = (message, timeoutSec) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SHOW',
+      data: {
+        message: message,
+        type: 'INFO'
+      }
+    })
+    setTimeout(() => {
+      dispatch(
+        hideNotification()
+      )
+    }, timeoutSec * 1000)
   }
 }
 

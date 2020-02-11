@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {createAnecdote} from '../reducers/anecdoteReducer'
-import {showInfo, hideNotification} from '../reducers/notificationReducer'
-import anecdoteService from '../services/anecdotes'
+import { createAnecdote } from '../reducers/anecdoteReducer'
+import { showInfo } from '../reducers/notificationReducer'
 
 const AnecdoteForm = (props) => {
   const addAnecdote = async (event) => {
@@ -13,12 +12,8 @@ const AnecdoteForm = (props) => {
       content: content,
       votes: 0
     }
-    const createdAnecdote = await anecdoteService.create(newAnecdote)
-    props.createAnecdote(createdAnecdote)
-    props.showInfo('Anecdote \''+content+'\' created')
-    setTimeout(() => {
-      props.hideNotification()
-    }, 3000)
+    props.createAnecdote(newAnecdote)
+    props.showInfo(`Anecdote '${content}' created`, 3)
   }
 
   return (
@@ -34,21 +29,13 @@ const AnecdoteForm = (props) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  console.log('AnecdoteForm, current state: ',state)
-  return {
-    anecdotes: state.anecdotes
-  }
-}
-
 const mapDispatchToProps = {
   createAnecdote,
-  showInfo,
-  hideNotification
+  showInfo
 }
 
 // eksportoidaan suoraan connectin palauttama komponentti
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(AnecdoteForm)
