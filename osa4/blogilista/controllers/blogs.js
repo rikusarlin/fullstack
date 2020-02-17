@@ -8,14 +8,17 @@ blogsRouter.get('/', async (request, response, next) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if (!request.token || !decodedToken.id) {
+      //logger.info('In blogsRouter.get all, token: ', request.token)
       return response.status(401).json({ error: 'token missing or invalid' })
     }
 
     const blogs = await Blog
       .find({ 'user':decodedToken.id }).populate('user', { username: 1, name: 1 })
+    //logger.info('In blogsRouter.get all, results:', blogs) 
     response.json(blogs)
   } catch (error) {
-    next(error)
+   //logger.info('In blogsRouter.error:', error) 
+   next(error)
   }
 })
 

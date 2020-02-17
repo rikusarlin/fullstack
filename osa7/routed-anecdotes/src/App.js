@@ -172,7 +172,7 @@ const App = () => {
   */
 
   return (
-    <div>
+    <div class="container">
       <h1>Software anecdotes</h1>     
       <Notification message={notification}/>
       <Menu
