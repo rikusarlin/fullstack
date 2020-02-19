@@ -59,27 +59,34 @@ export const Blog = (props)  => {
   }, [])
   */
 
-  if(props.user != null){
-  return(
-    <div className="blogItem">
-    <div style={hideWhenOpened}>
-      <div className="blogClosed" onClick={toggleOpened}> &gt; {props.title} {props.author}</div>
-    </div>
-    <div style={showWhenOpened}>
-       <div className="blogOpened">
-          <form onSubmit={handleLike}>
-            <div>
-              <div onClick={toggleOpened}> &lt; {props.title} {props.author}</div><br/>
-              {props.url} <br/>
-              {props.likes} likes <button type="submit">like</button><br/>
-              added by {props.user.name}<br/>
-              <button className="deleteButton" type="button" onClick={confirmDelete}>delete</button><br/>
-            </div>
-          </form>
+  if(props.user.username != null){
+
+    let deleteBlog = <button className="deleteButton" type="button" onClick={confirmDelete}>delete</button>
+    if(props.user.username !== props.blogUser.username){
+      deleteBlog = <div/>
+    }
+
+    return(
+      <div className="blogItem">
+        <div style={hideWhenOpened}>
+          <div className="blogClosed" onClick={toggleOpened}> &gt; {props.title} {props.author}</div>
         </div>
-    </div>
-  </div>
-)}
+        <div style={showWhenOpened}>
+          <div className="blogOpened">
+            <form onSubmit={handleLike}>
+              <div>
+                <div onClick={toggleOpened}> &lt; {props.title} {props.author}</div><br/>
+                {props.url} <br/>
+                {props.likes} likes <button type="submit">like</button><br/>
+                added by {props.blogUser.name}<br/>
+                {deleteBlog}<br/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
