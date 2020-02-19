@@ -12,7 +12,7 @@ export const Blogs = (props) => {
   }, [token, getBlogs])
 
   // const filteredBlogs = blogs.filter(blog => blog.author.toUpperCase().indexOf(filterValue.toUpperCase()) >= 0)
-  console.log("props.blogs: ",props.blogs)
+  //console.log("props.blogs: ",props.blogs)
   if(props.blogs !== null){
     const sortedBlogs = props.blogs.sort((a,b) => b.likes - a.likes )
     const blogList = sortedBlogs.map(blog =>
@@ -23,7 +23,7 @@ export const Blogs = (props) => {
         author={ blog.author }
         likes={ blog.likes }
         url={ blog.url }
-        user={ blog.user }
+        blogUser={ blog.user }
       />
     )
     if(props.user.user !== null){
