@@ -1,22 +1,26 @@
 import React from 'react';
 import './App.css';
 import Blogs from './components/Blogs'
+import Blog from './components/Blog'
+import Users from './components/Users'
+import User from './components/User'
 import Notification from './components/Notification'
-import { showInfo, showError } from './reducers/notificationReducer'
-import { emptyBlogList, createBlog } from './reducers/blogReducer'
-import { login, logout } from './reducers/loginReducer'
-import Togglable from './components/Togglable'
-import  { useField } from './hooks'
+import NewBlog from './components/NewBlog'
+import {
+  BrowserRouter as Router,
+  Route, Link
+} from 'react-router-dom'
 import { connect } from 'react-redux'
+import { login, logout } from './reducers/loginReducer'
+import { showInfo, showError } from './reducers/notificationReducer'
+import { emptyBlogList } from './reducers/blogReducer'
+import  { useField } from './hooks'
+import { removeReset } from './utils'
+
 
 export const App = (props) => {
   const userName = useField('text')
   const passWord = useField('password')
-  const title = useField('text')
-  const author = useField('text')
-  const url = useField('text')
-
-  const blogFormRef = React.createRef()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -45,36 +49,6 @@ export const App = (props) => {
     }
   }
 
-  const handlePost = async (event) => {
-    event.preventDefault()
-    
-    try {
-      blogFormRef.current.toggleVisibility()
-      const newBlog = {
-        title: title.value,
-        author: author.value,
-        url: url.value
-      }
-      props.createBlog(newBlog, props.user.token)
-      url.reset()
-      title.reset()
-      author.reset()
-      props.showInfo('added new blog', 3)
-    } catch (exception) {
-      console.log('exception: '+exception)
-      props.showError('error in adding new blog', 3)
-    }
-  }
-
-  const blogList = () => (
-    <div>
-      <Blogs/>
-    </div>
- )
-
-  const removeProperty = prop => ({ [prop]: _, ...rest }) => rest
-  const removeReset = removeProperty('reset')
-
   const loginForm = () => (
     <div className="loginForm">
       <h3>Login</h3>
@@ -92,42 +66,64 @@ export const App = (props) => {
     </div>
   )
 
-  const blogForm = () => (
-  <Togglable buttonLabel="new blog" ref={blogFormRef}>
-    <div>
-    <h3>New blog</h3>
-    <form onSubmit={handlePost}>
-      <div>
-        <label htmlFor="Title">Title</label>
-        <input {...removeReset(title)}/>
-      </div>
-      <div>
-        <label htmlFor="Author">Author</label>
-        <input {...removeReset(author)}/>
-      </div>
-      <div>
-        <label htmlFor="URL">URL</label>
-        <input {...removeReset(url)}/>
-      </div>
-      <button type="submit">create</button>
-    </form>
-    </div>
-  </Togglable>
- )
+  const logoutForm = () => (
+    <button type="button" onClick={handleLogout}>logout</button>
+  )
+
+  const userById = (id) =>
+    props.users.find(a => a.id === id)
+
+  const blogById = (id) =>
+    props.blogs.find(a => a.id === id)
 
   return (
     <div>
-      <h2>Blogs</h2>
-      <Notification/>
-      {props.user.username === null ?
-        loginForm()
+      {props.user.username !== null ?
+        <div>
+          <Router>
+            <div>
+              <div className="menuItem">
+                <Link  to="/">blogs</Link>
+                <Link  to="/users">users</Link>
+                <div className="logout">
+                  {props.user.name } logged in {logoutForm()}
+                </div>
+              </div>
+              <Notification/>
+              <div>
+                <h2>Blog app</h2>
+              </div>
+              <Route exact path="/" render={() =>
+                <div>
+                  <NewBlog/>
+                  <Blogs/>
+                </div>
+              } />
+              <Route exact path="/blogs" render={() =>
+                <div>
+                  <NewBlog/>
+                  <Blogs/>
+                </div>
+              } />
+              <Route exact path="/users" render={() => <Users />} />
+              <Route exact path="/users/:id" render={({ match }) =>
+                <User 
+                  user={userById(match.params.id)}
+                /> 
+              } /> 
+              <Route exact path="/blogs/:id" render={({ match }) =>
+                <Blog 
+                  blog={blogById(match.params.id)}
+                /> 
+              } /> 
+            </div>
+          </Router>
+        </div>
         :
         <div>
-          <form onSubmit={handleLogout}>
-            <p>{props.user.username} logged in <button type="submit">logout</button></p>
-          </form>
-          {blogForm()}
-          {blogList()}
+          <h2>Blog app</h2>
+          <Notification/>
+          {loginForm()}
         </div>
       }
     </div>
@@ -136,12 +132,14 @@ export const App = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
+    users: state.users,
+    blogs: state.blogs
   }
 }
 
 const mapDispatchToProps = {
-  showInfo, showError, emptyBlogList, createBlog, login, logout
+  login,logout, showInfo, showError, emptyBlogList
 }
 
 export default connect(

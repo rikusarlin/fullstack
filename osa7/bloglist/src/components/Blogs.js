@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
-import Blog from './Blog'
 import { fetchBlogs } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 
 export const Blogs = (props) => {
@@ -16,19 +16,14 @@ export const Blogs = (props) => {
   if(props.blogs !== null){
     const sortedBlogs = props.blogs.sort((a,b) => b.likes - a.likes )
     const blogList = sortedBlogs.map(blog =>
-      <Blog
-        key={ blog.id }
-        id={ blog.id }
-        title={ blog.title }
-        author={ blog.author }
-        likes={ blog.likes }
-        url={ blog.url }
-        blogUser={ blog.user }
-      />
+      <div className="bloglist" key={blog.id}>
+        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        <br/>
+      </div>
     )
     if(props.user.user !== null){
       return(
-        <div className="blogList">{blogList}</div>
+        <div>{blogList}</div>
       )
     }
   } 
@@ -44,7 +39,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  fetchBlogs,
+  fetchBlogs
 }
 
 export default connect(
