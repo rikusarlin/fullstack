@@ -11,6 +11,7 @@ describe('<Blog />', () => {
   const mockHandler2 = jest.fn()
   const mockHandler3 = jest.fn()
   const mockHandler4 = jest.fn()
+  const mockHandler5 = jest.fn()
 
   beforeEach(() => {
     let user = {
@@ -28,7 +29,8 @@ describe('<Blog />', () => {
         name: 'Riku Sarlin',
         username: 'rikusarlin',
         token: '438765436298'
-      }
+      },
+      comments: ['Kommentti 1','Kommentti 2']
     }
     component = render(
       <Blog
@@ -38,6 +40,7 @@ describe('<Blog />', () => {
        showError={mockHandler2}
        likeBlog={mockHandler3}
        deleteBlog={mockHandler4}
+       commentBlog={mockHandler5}
     />
     )
   })
@@ -48,7 +51,7 @@ describe('<Blog />', () => {
     component.container.querySelector('.blog')
   })
 
-  test('at blog details are displayed', () => {
+  test('all blog details are displayed', () => {
     const div = component.container.querySelector('.blog')
     // console.log(prettyDOM(div))
     expect(div).toHaveTextContent('Blog title')

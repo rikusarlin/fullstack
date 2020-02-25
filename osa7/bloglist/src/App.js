@@ -4,6 +4,7 @@ import Blogs from './components/Blogs'
 import Blog from './components/Blog'
 import Users from './components/Users'
 import User from './components/User'
+import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import NewBlog from './components/NewBlog'
 import {
@@ -11,31 +12,11 @@ import {
   Route, Link
 } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { login, logout } from './reducers/loginReducer'
+import { logout } from './reducers/loginReducer'
 import { showInfo, showError } from './reducers/notificationReducer'
 import { emptyBlogList } from './reducers/blogReducer'
-import  { useField } from './hooks'
-import { removeReset } from './utils'
-
 
 export const App = (props) => {
-  const userName = useField('text')
-  const passWord = useField('password')
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const username = userName.value
-      const password = passWord.value
-      props.login(username, password)
-      userName.reset()
-      passWord.reset()
-      props.showInfo('login successful', 3)
-    } catch (exception) {
-      console.log('exception: '+exception)
-      props.showError('wrong username or password',3)
-    }
-  }
 
   const handleLogout = async (event) => {
     event.preventDefault()
@@ -45,29 +26,12 @@ export const App = (props) => {
       props.showInfo('logout successful', 3)
     } catch (exception) {
       console.log('exception: '+exception)
-      props.showError('error in logut', 3)
+      props.showError('error in logout', 3)
     }
   }
 
-  const loginForm = () => (
-    <div className="loginForm">
-      <h3>Login</h3>
-      <form onSubmit={handleLogin}>
-        <div>
-            <label htmlFor="Username">Username</label>
-            <input {...removeReset(userName)} /> 
-        </div>
-        <div>
-          <label htmlFor="Password">Password</label>
-          <input {...removeReset(passWord)} />
-        </div>
-        <button type="submit" className="loginButton">login</button>
-      </form>
-    </div>
-  )
-
   const logoutForm = () => (
-    <button type="button" onClick={handleLogout}>logout</button>
+    <button type="button" onClick={handleLogout} className="btn btn-primary my-2 my-sm-0">logout</button>
   )
 
   const userById = (id) => {
@@ -87,16 +51,22 @@ export const App = (props) => {
   }
 
   return (
-    <div>
-      {props.user.username !== null ?
-        <div>
-          <Router>
+    <div className="container">
+      <Router>
+        {props.user.username !== null ?
+          <div>
             <div>
-              <div className="menuItem">
-                <Link  to="/">blogs</Link>
-                <Link  to="/users">users</Link>
-                <div className="logout">
-                  {props.user.name } logged in {logoutForm()}
+              <div className="navbar navbar-expand-lg">
+                <div className="navbar-nav navbar-light bg-light">
+                  <div className="nav-item">
+                    <Link  className="nav-link" to="/">blogs</Link>
+                  </div>
+                  <div className="nav-item">
+                    <Link  className="nav-link" to="/users">users</Link>
+                  </div>
+                  <div className="nav-item">
+                    {props.user.name } logged in {logoutForm()}
+                  </div>
                 </div>
               </div>
               <Notification/>
@@ -127,15 +97,15 @@ export const App = (props) => {
                 /> 
               } /> 
             </div>
-          </Router>
-        </div>
-        :
-        <div>
-          <h2>Blog app</h2>
-          <Notification/>
-          {loginForm()}
-        </div>
-      }
+          </div>
+          :
+          <div>
+            <h2>Blog app</h2>
+            <Notification/>
+            <LoginForm/>
+          </div>
+        }
+      </Router>
     </div>
   )
 }
@@ -149,7 +119,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  login,logout, showInfo, showError, emptyBlogList
+  logout, showInfo, showError, emptyBlogList
 }
 
 export default connect(

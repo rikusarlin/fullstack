@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react'
-import {
-  Link
-} from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { fetchUsers } from '../reducers/userReducer'
 import { connect } from 'react-redux'
+import { Table } from 'react-bootstrap'
 
 
 export const Users = (props) => {
@@ -19,20 +18,20 @@ export const Users = (props) => {
     const sortedUsers = props.users.sort((a,b) => b.name - a.name )
     const userList = sortedUsers.map(user =>
       <tr key={user.id}>
-        <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
-        <td>{ user.blogs.length }</td>
+        <td className="col-sm-1"><Link to={`/users/${user.id}`}>{user.name}</Link></td>
+        <td className="col-sm-2">{ user.blogs.length }</td>
       </tr>
     )
     if(props.user.username !== null){
       return(
-        <table>
+        <Table striped>
           <thead>
-            <tr><th/><th>blogs created</th></tr>
+            <tr><th className="col-sm-1"/><th className="col-sm-2">blogs created</th></tr>
           </thead>
           <tbody>
             {userList}
           </tbody>
-        </table>
+        </Table>
       )
     } else {
       return(<div/>)

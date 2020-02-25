@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import { fetchBlogs } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import { Table } from 'react-bootstrap'
 
 export const Blogs = (props) => {
   var token=props.user.token
@@ -16,14 +16,20 @@ export const Blogs = (props) => {
   if(props.blogs !== null){
     const sortedBlogs = props.blogs.sort((a,b) => b.likes - a.likes )
     const blogList = sortedBlogs.map(blog =>
-      <div className="bloglist" key={blog.id}>
-        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-        <br/>
-      </div>
+      <tr key={blog.id}>
+        <td>
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        </td>
+      </tr>
     )
+    
     if(props.user.user !== null){
       return(
-        <div>{blogList}</div>
+        <Table striped>
+          <tbody>
+            {blogList}
+          </tbody>
+        </Table>
       )
     }
   } 

@@ -40,19 +40,19 @@ export const NewBlog = (props) => {
       <div>
       <h3>New blog</h3>
       <form onSubmit={handlePost}>
-        <div>
-          <label htmlFor="Title">Title</label>
-          <input {...removeReset(title)}/>
+        <div className="form-group row">
+          <label htmlFor="Title" className="col-sm-1 col-form-label">Title</label>
+          <input className="col-sm-5" {...removeReset(title)}/>
         </div>
-        <div>
-          <label htmlFor="Author">Author</label>
-          <input {...removeReset(author)}/>
+        <div className="form-group row">
+          <label htmlFor="Author" className="col-sm-1 col-form-label">Author</label>
+          <input className="col-sm-5" {...removeReset(author)}/>
         </div>
-        <div>
-          <label htmlFor="URL">URL</label>
-          <input {...removeReset(url)}/>
+        <div className="form-group row">
+          <label htmlFor="URL" className="col-sm-1 col-form-label">URL</label>
+          <input className="col-sm-5" {...removeReset(url)}/>
         </div>
-        <button type="submit">create</button>
+        <button type="submit" className="btn btn-primary">create</button>
       </form>
       </div>
     </Togglable>

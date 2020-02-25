@@ -4,11 +4,13 @@ import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogReducer'
 import  { useField } from '../hooks'
 import { removeReset } from '../utils'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
-export const Blog = (props)  => {
+export const BlogNoHistory = (props)  => {
   const comment = useField('text')
 
   if ( props.blog === undefined || props.blog === null){
+    props.history.push("/blogs")
     return <div/>
   }
 
@@ -52,6 +54,7 @@ export const Blog = (props)  => {
     try {
       props.deleteBlog(props.blog.id, props.user.token)
       props.showInfo('blog deleted', 3)
+      props.history.push("/blogs")
     } catch (exception) {
       console.log('exception: '+exception)
       props.showError('error in deleting blog', 3)
@@ -71,14 +74,16 @@ export const Blog = (props)  => {
 
   const commentForm = 
     <form onSubmit={handleComment}>
-      <input {...removeReset(comment)}/>
-      <button type="submit">add comment</button>
+      <div className="form-group row">
+        <input className="col-sm-3" {...removeReset(comment)}/>
+        <button type="submit" className="btn btn-primary">add comment</button>
+      </div>
     </form>
 
 
   if(props.user.username != null){
 
-    let deleteBlog = <button className="deleteButton" type="button" onClick={confirmDelete}>delete</button>
+    let deleteBlog = <button className="btn btn-danger" type="button" onClick={confirmDelete}>delete</button>
     if(props.user.username !== props.blog.user.username){
       deleteBlog = <div/>
     }
@@ -105,7 +110,7 @@ export const Blog = (props)  => {
           <h2>{props.blog.title} {props.blog.author}</h2>
           <a href={props.blog.url}>{props.blog.url}</a> <br/>
           <form onSubmit={handleLike}>
-            {props.blog.likes} likes <button type="submit">like</button><br/>
+            {props.blog.likes} likes <button className="btn btn-primary" type="submit">like</button><br/>
           </form>
           added by {props.blog.user.name}<br/>
           {deleteBlog}<br/>
@@ -125,6 +130,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   showInfo, showError, likeBlog, deleteBlog, commentBlog
 }
+const Blog = withRouter(BlogNoHistory)
 
 export default connect(
   mapStateToProps,
