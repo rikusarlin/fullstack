@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 export const Blog = (props)  => {
 
-  if ( props.blog === undefined){
+  if ( props.blog === undefined || props.blog === null){
     return <div/>
   }
 
@@ -45,11 +45,26 @@ export const Blog = (props)  => {
 
   }
 
+  const commentList = props.blog.comments.map(comment =>
+    <li key={comment}>{comment}</li>
+  )
+
   if(props.user.username != null){
 
     let deleteBlog = <button className="deleteButton" type="button" onClick={confirmDelete}>delete</button>
     if(props.user.username !== props.blog.user.username){
       deleteBlog = <div/>
+    }
+    
+    let comments =
+      <div> 
+        <b>Comments</b><br/>
+        <ul>
+          {commentList}
+        </ul>
+      </div>
+    if(props.blog.comments.length <= 0){
+      comments = <div><b>No comments yet</b></div>
     }
 
     return(
@@ -61,6 +76,7 @@ export const Blog = (props)  => {
             {props.blog.likes} likes <button type="submit">like</button><br/>
             added by {props.blog.user.name}<br/>
             {deleteBlog}<br/>
+            {comments}
           </div>
         </form>
       </div>

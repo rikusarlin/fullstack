@@ -70,11 +70,21 @@ export const App = (props) => {
     <button type="button" onClick={handleLogout}>logout</button>
   )
 
-  const userById = (id) =>
-    props.users.find(a => a.id === id)
+  const userById = (id) => {
+    if(props.user !== null) {
+      return props.users.find(a => a.id === id)
+    } else {
+      return null
+    }
+  }
 
-  const blogById = (id) =>
-    props.blogs.find(a => a.id === id)
+  const blogById = (id) => {
+    if(props.blogs !== null) {
+      return props.blogs.find(a => a.id === id)
+    } else {
+      return null
+    }
+  }
 
   return (
     <div>
