@@ -1,13 +1,33 @@
 import React from 'react';
 import { showInfo, showError } from '../reducers/notificationReducer'
-import { likeBlog, deleteBlog } from '../reducers/blogReducer'
+import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogReducer'
+import  { useField } from '../hooks'
+import { removeReset } from '../utils'
 import { connect } from 'react-redux'
 
 export const Blog = (props)  => {
+  const comment = useField('text')
 
   if ( props.blog === undefined || props.blog === null){
     return <div/>
   }
+
+  const handleComment = async (event) => {
+    event.preventDefault()
+    
+    try {
+      const newComment = {
+        comment: comment.value
+      }
+      props.commentBlog(props.blog.id, newComment, props.user.token)
+      comment.reset()
+      props.showInfo(`commented on blog '${props.blog.title}'`, 3)
+    } catch (exception) {
+      console.log('exception: '+exception)
+      props.showError('error in commenting blog', 3)
+    }
+  }
+
 
   const handleLike = async (event) => {
     event.preventDefault()
@@ -49,6 +69,13 @@ export const Blog = (props)  => {
     <li key={comment}>{comment}</li>
   )
 
+  const commentForm = 
+    <form onSubmit={handleComment}>
+      <input {...removeReset(comment)}/>
+      <button type="submit">add comment</button>
+    </form>
+
+
   if(props.user.username != null){
 
     let deleteBlog = <button className="deleteButton" type="button" onClick={confirmDelete}>delete</button>
@@ -59,26 +86,31 @@ export const Blog = (props)  => {
     let comments =
       <div> 
         <b>Comments</b><br/>
+        {commentForm}
         <ul>
           {commentList}
         </ul>
       </div>
     if(props.blog.comments.length <= 0){
-      comments = <div><b>No comments yet</b></div>
+      comments =
+        <div>
+          <b>No comments yet</b>
+          {commentForm}
+        </div>
     }
 
     return(
       <div className="blog">
-        <form onSubmit={handleLike}>
-          <div>
-            <h2>{props.blog.title} {props.blog.author}</h2><br/>
-            <a href={props.blog.url}>{props.blog.url}</a> <br/>
+        <div>
+          <h2>{props.blog.title} {props.blog.author}</h2>
+          <a href={props.blog.url}>{props.blog.url}</a> <br/>
+          <form onSubmit={handleLike}>
             {props.blog.likes} likes <button type="submit">like</button><br/>
-            added by {props.blog.user.name}<br/>
-            {deleteBlog}<br/>
-            {comments}
+          </form>
+          added by {props.blog.user.name}<br/>
+          {deleteBlog}<br/>
+          {comments}
           </div>
-        </form>
       </div>
     )
   }
@@ -91,7 +123,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  showInfo, showError, likeBlog, deleteBlog
+  showInfo, showError, likeBlog, deleteBlog, commentBlog
 }
 
 export default connect(

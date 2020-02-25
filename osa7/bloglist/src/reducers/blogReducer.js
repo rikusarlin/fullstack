@@ -14,6 +14,16 @@ export const likeBlog = (blogToLike, token) => {
   }
 }
 
+export const commentBlog = (id, comment, token) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.comment(id, comment, token)
+    dispatch({
+      type: 'COMMENT_BLOG',
+      data: updatedBlog
+    })
+  }
+}
+
 export const deleteBlog = (blogId, token) => {
   return async dispatch => {
     await blogService.deleteBlog(blogId, token)
@@ -63,7 +73,8 @@ const reducer = (state = [], action) => {
     case 'NEW_BLOG':
       return [...state, action.data]
     case 'LIKE_BLOG':
-      const id = action.data.id
+    case 'COMMENT_BLOG':
+        const id = action.data.id
       return state.map(blog =>
         blog.id !== id ? blog : action.data 
       )
