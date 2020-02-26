@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 
 const UserNoHistory = (props) => {
   if ( props.user === undefined){
-    props.history.push("/blogs")
+    props.history.push('/blogs')
     return <div/>
   }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, cleanup} from '@testing-library/react'
-import {Blog} from './Blog'
+import { render, cleanup } from '@testing-library/react'
+import { Blog } from './Blog'
 
 
 describe('<Blog />', () => {
@@ -34,14 +34,14 @@ describe('<Blog />', () => {
     }
     component = render(
       <Blog
-       blog={blog}
-       user={user}
-       showInfo={mockHandler1}
-       showError={mockHandler2}
-       likeBlog={mockHandler3}
-       deleteBlog={mockHandler4}
-       commentBlog={mockHandler5}
-    />
+        blog={blog}
+        user={user}
+        showInfo={mockHandler1}
+        showError={mockHandler2}
+        likeBlog={mockHandler3}
+        deleteBlog={mockHandler4}
+        commentBlog={mockHandler5}
+      />
     )
   })
 

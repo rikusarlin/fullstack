@@ -43,14 +43,14 @@ const notificationReducer = (state = initialState, action) => {
   console.log('action in notificationReducer', action)
 
   switch(action.type) {
-    case 'SHOW':
-      state = action.data
-      return state
-    case 'HIDE':
-       state = initialState
-       return state
-     default:
-       return state
+  case 'SHOW':
+    state = action.data
+    return state
+  case 'HIDE':
+    state = initialState
+    return state
+  default:
+    return state
   }
 }
 

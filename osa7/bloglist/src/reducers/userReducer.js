@@ -3,7 +3,6 @@ import userService from '../services/users'
 export const fetchUsers = () => {
   return async dispatch => {
     const users = await userService.getAll()
-    console.log("Users.length: ",users.length)
     dispatch({
       type: 'FETCH_USERS',
       data: users,
@@ -16,10 +15,10 @@ const reducer = (state = [], action) => {
   console.log('action in userReducer', action)
 
   switch(action.type) {
-    case 'FETCH_USERS':
-      return action.data
-    default:
-      return state
+  case 'FETCH_USERS':
+    return action.data
+  default:
+    return state
   }
 }
 

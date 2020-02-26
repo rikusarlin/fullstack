@@ -44,5 +44,5 @@ test('clicking the button calls event handler once', async () => {
   fireEvent.click(button)
   fireEvent.click(button)
 
-  expect(mockHandler.mock.calls.length).toBe(2)
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })

@@ -1,5 +1,5 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import './App.css'
 import Blogs from './components/Blogs'
 import Blog from './components/Blog'
 import Users from './components/Users'
@@ -87,15 +87,15 @@ export const App = (props) => {
               } />
               <Route exact path="/users" render={() => <Users />} />
               <Route exact path="/users/:id" render={({ match }) =>
-                <User 
+                <User
                   user={userById(match.params.id)}
-                /> 
-              } /> 
+                />
+              } />
               <Route exact path="/blogs/:id" render={({ match }) =>
-                <Blog 
+                <Blog
                   blog={blogById(match.params.id)}
-                /> 
-              } /> 
+                />
+              } />
             </div>
           </div>
           :

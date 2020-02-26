@@ -10,7 +10,7 @@ export const login = (username, password) => {
   return async dispatch => {
     const user = await loginService.login(
       { username: username,
-        password: password }) 
+        password: password })
     dispatch({
       type: 'LOGIN',
       data: {
@@ -36,12 +36,12 @@ const reducer = (state = initialState, action) => {
   console.log('action in login Reducer', action)
 
   switch(action.type) {
-    case 'LOGIN':
-      return action.data
-    case 'LOGOUT':
-      return initialState
-    default:
-      return state
+  case 'LOGIN':
+    return action.data
+  case 'LOGOUT':
+    return initialState
+  default:
+    return state
   }
 }
 

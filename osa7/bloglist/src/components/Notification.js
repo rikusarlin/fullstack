@@ -6,25 +6,25 @@ const Notification = (props) => {
   if(notification.message === null){
     return (
       <div/>
-    )      
+    )
   } else {
     if(notification.type === 'INFO'){
       return(
         <div className="info">
           {notification.message}
-       </div>  
+        </div>
       )
     } else if(notification.type === 'ERROR'){
       return(
         <div className="error">
           {notification.message}
-       </div>  
+        </div>
       )
     } else {
       return (
         <div>
           {notification.message}
-        </div>  
+        </div>
       )
     }
   }

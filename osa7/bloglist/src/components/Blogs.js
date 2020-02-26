@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { fetchBlogs } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -22,7 +22,7 @@ export const Blogs = (props) => {
         </td>
       </tr>
     )
-    
+
     if(props.user.user !== null){
       return(
         <Table striped>
@@ -32,7 +32,7 @@ export const Blogs = (props) => {
         </Table>
       )
     }
-  } 
+  }
   return(<div/>)
 }
 

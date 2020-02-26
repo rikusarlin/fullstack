@@ -5,7 +5,8 @@ const user = {
 }
 
 const login = (credentials) => {
-return Promise.resolve(user)
+  console.log('credentials: ',credentials)
+  return Promise.resolve(user)
 }
 
 export default { login }

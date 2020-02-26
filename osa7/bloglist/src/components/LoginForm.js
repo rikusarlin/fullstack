@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
 import { login } from '../reducers/loginReducer'
 import { showInfo, showError } from '../reducers/notificationReducer'
@@ -29,23 +29,23 @@ export const LoginFormNoHistory = (props) => {
 
   return (
     <div>
-    <h3>Login</h3>
-    <form onSubmit={handleLogin}>
-      <div className="form-group row">
+      <h3>Login</h3>
+      <form onSubmit={handleLogin}>
+        <div className="form-group row">
           <label htmlFor="Username" className="col-sm-1 col-form-label">Username</label>
           <div className="col-sm-3">
-            <input className="form-control" {...removeReset(userName)} /> 
+            <input className="form-control" {...removeReset(userName)} />
           </div>
-      </div>
-      <div className="form-group row">
-        <label htmlFor="Password" className="col-sm-1 col-form-label">Password</label>
-        <div className="col-sm-3">
-          <input className="form-control" {...removeReset(passWord)} />
         </div>
-      </div>
-      <button type="submit" className="btn btn-primary">login</button>
-    </form>
-  </div>
+        <div className="form-group row">
+          <label htmlFor="Password" className="col-sm-1 col-form-label">Password</label>
+          <div className="col-sm-3">
+            <input className="form-control" {...removeReset(passWord)} />
+          </div>
+        </div>
+        <button type="submit" className="btn btn-primary">login</button>
+      </form>
+    </div>
   )
 }
 

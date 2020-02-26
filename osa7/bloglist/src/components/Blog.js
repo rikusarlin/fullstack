@@ -1,22 +1,20 @@
-import React from 'react';
+import React from 'react'
 import { showInfo, showError } from '../reducers/notificationReducer'
 import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogReducer'
 import  { useField } from '../hooks'
 import { removeReset } from '../utils'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 
-export const BlogNoHistory = (props)  => {
+export const Blog = (props)  => {
   const comment = useField('text')
 
   if ( props.blog === undefined || props.blog === null){
-    props.history.push("/blogs")
     return <div/>
   }
 
   const handleComment = async (event) => {
     event.preventDefault()
-    
+
     try {
       const newComment = {
         comment: comment.value
@@ -33,7 +31,7 @@ export const BlogNoHistory = (props)  => {
 
   const handleLike = async (event) => {
     event.preventDefault()
-    
+
     try {
       const updatedBlog = {
         id: props.blog.id,
@@ -50,11 +48,11 @@ export const BlogNoHistory = (props)  => {
     }
   }
 
-  const handleDelete = async () => {    
+  const handleDelete = async () => {
     try {
       props.deleteBlog(props.blog.id, props.user.token)
       props.showInfo('blog deleted', 3)
-      props.history.push("/blogs")
+      props.history.push('/blogs')
     } catch (exception) {
       console.log('exception: '+exception)
       props.showError('error in deleting blog', 3)
@@ -62,7 +60,7 @@ export const BlogNoHistory = (props)  => {
   }
 
   const confirmDelete = () => {
-    if(window.confirm("remove blog "+props.blog.title+" by "+props.blog.author+"?")){
+    if(window.confirm(`remove blog ${props.blog.title} by ${props.blog.author}?`)){
       handleDelete()
     }
 
@@ -72,7 +70,7 @@ export const BlogNoHistory = (props)  => {
     <li key={comment}>{comment}</li>
   )
 
-  const commentForm = 
+  const commentForm =
     <form onSubmit={handleComment}>
       <div className="form-group row">
         <input className="col-sm-3" {...removeReset(comment)}/>
@@ -81,15 +79,15 @@ export const BlogNoHistory = (props)  => {
     </form>
 
 
-  if(props.user.username != null){
+  if(props.user.username !== null){
 
     let deleteBlog = <button className="btn btn-danger" type="button" onClick={confirmDelete}>delete</button>
     if(props.user.username !== props.blog.user.username){
       deleteBlog = <div/>
     }
-    
+
     let comments =
-      <div> 
+      <div>
         <b>Comments</b><br/>
         {commentForm}
         <ul>
@@ -115,7 +113,7 @@ export const BlogNoHistory = (props)  => {
           added by {props.blog.user.name}<br/>
           {deleteBlog}<br/>
           {comments}
-          </div>
+        </div>
       </div>
     )
   }
@@ -130,7 +128,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   showInfo, showError, likeBlog, deleteBlog, commentBlog
 }
-const Blog = withRouter(BlogNoHistory)
 
 export default connect(
   mapStateToProps,
