@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = '/api/blogs'
+// eslint-disable-next-line no-undef
+const baseUrl = BACKEND_URL + '/api/blogs'
 
 const getAll = async (token) => {
   const config = {

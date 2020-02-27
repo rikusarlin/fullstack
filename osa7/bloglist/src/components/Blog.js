@@ -4,8 +4,9 @@ import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogReducer'
 import  { useField } from '../hooks'
 import { removeReset } from '../utils'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
-export const Blog = (props)  => {
+export const BlogNoHistory = (props)  => {
   const comment = useField('text')
 
   if ( props.blog === undefined || props.blog === null){
@@ -128,6 +129,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   showInfo, showError, likeBlog, deleteBlog, commentBlog
 }
+
+const Blog = withRouter(BlogNoHistory)
 
 export default connect(
   mapStateToProps,

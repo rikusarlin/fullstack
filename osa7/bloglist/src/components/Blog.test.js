@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, cleanup } from '@testing-library/react'
-import { Blog } from './Blog'
+import { BlogNoHistory as Blog } from './Blog'
 
 
 describe('<Blog />', () => {

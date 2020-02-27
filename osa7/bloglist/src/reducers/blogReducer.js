@@ -26,7 +26,8 @@ export const commentBlog = (id, comment, token) => {
 
 export const deleteBlog = (blogId, token) => {
   return async dispatch => {
-    await blogService.deleteBlog(blogId, token)
+    const response = await blogService.deleteBlog(blogId, token)
+    console.log(`In deleteBlog (id ${blogId}), response: ${response}`)
     dispatch({
       type: 'DELETE_BLOG',
       data: blogId

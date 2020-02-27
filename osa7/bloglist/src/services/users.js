@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = '/api/users'
+// eslint-disable-next-line no-undef
+const baseUrl = BACKEND_URL + '/api/users'
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
