@@ -34,16 +34,16 @@ export const LoginFormNoHistory = (props) => {
         <div className="form-group row">
           <label htmlFor="Username" className="col-sm-1 col-form-label">Username</label>
           <div className="col-sm-3">
-            <input className="form-control" {...removeReset(userName)} />
+            <input className="form-control" data-cy="username" {...removeReset(userName)} />
           </div>
         </div>
         <div className="form-group row">
           <label htmlFor="Password" className="col-sm-1 col-form-label">Password</label>
           <div className="col-sm-3">
-            <input className="form-control" {...removeReset(passWord)} />
+            <input className="form-control" data-cy="password" {...removeReset(passWord)} />
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">login</button>
+        <button type="submit" className="btn btn-primary" data-cy="login">login</button>
       </form>
     </div>
   )

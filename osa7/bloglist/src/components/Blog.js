@@ -109,7 +109,7 @@ export const BlogNoHistory = (props)  => {
           <h2>{props.blog.title} {props.blog.author}</h2>
           <a href={props.blog.url}>{props.blog.url}</a> <br/>
           <form onSubmit={handleLike}>
-            {props.blog.likes} likes <button className="btn btn-primary" type="submit">like</button><br/>
+            {props.blog.likes} likes <button className="btn btn-primary" data-cy="like" type="submit">like</button><br/>
           </form>
           added by {props.blog.user.name}<br/>
           {deleteBlog}<br/>

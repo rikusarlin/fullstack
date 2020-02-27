@@ -18,7 +18,7 @@ export const Blogs = (props) => {
     const blogList = sortedBlogs.map(blog =>
       <tr key={blog.id}>
         <td>
-          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          <Link data-cy="blog-link" to={`/blogs/${blog.id}`}>{blog.title}</Link>
         </td>
       </tr>
     )
