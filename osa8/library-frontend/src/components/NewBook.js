@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { gql } from 'apollo-boost'
+import { useMutation } from '@apollo/react-hooks'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -6,15 +8,45 @@ const NewBook = (props) => {
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const [errorMessage, setErrorMessage] = useState(null)
+  // eslint-disable-next-line no-unused-vars
+  const [timeout, setTimeout] = useState(null)
 
-  if (!props.show) {
-    return null
+  const CREATE_BOOK = gql`
+    mutation createBook($title: String!, $author: String!, $published: Int!, $genres: [String!]!){
+      addBook(
+        title: $title,
+        author: $author,
+        published: $published,
+        genres: $genres
+      ) {
+        title
+        author
+        published
+        genres
+        id
+      }
+    }
+  `
+
+  const handleError = (error) => {
+    setErrorMessage(error.message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 10000)
   }
+
+  const [addBook] = useMutation(CREATE_BOOK, {
+    onError: handleError,
+    refetchQueries: [{ query: props.allBooksQuery},{query: props.allAuthorsQuery }]
+  })
 
   const submit = async (e) => {
     e.preventDefault()
-
-    console.log('add book...')
+    console.log("title, author, published genres:",title, author, published, genres)
+    await addBook({
+      variables: { title, author, published, genres }
+    })
 
     setTitle('')
     setPublished('')
@@ -28,8 +60,19 @@ const NewBook = (props) => {
     setGenre('')
   }
 
+  if (!props.show) {
+    return null
+  }
+
   return (
     <div>
+      <div>
+        {errorMessage &&
+          <div style={{ color: 'red' }}>
+            {errorMessage}
+          </div>
+        }
+      </div>
       <form onSubmit={submit}>
         <div>
           title
@@ -50,7 +93,7 @@ const NewBook = (props) => {
           <input
             type='number'
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={({ target }) => setPublished(parseInt(target.value))}
           />
         </div>
         <div>
