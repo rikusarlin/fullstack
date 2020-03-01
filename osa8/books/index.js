@@ -1,95 +1,27 @@
-const { ApolloServer, gql } = require('apollo-server')
-const { v1:uuidv1 } = require('uuid')
+const { ApolloServer, UserInputError, gql } = require('apollo-server')
+const config = require('./utils/config')
+const mongoose = require('mongoose')
+const Book = require('./models/book')
+const Author = require('./models/author')
+const logger = require('./utils/logger')
 
-let authors = [
-  {
-    name: 'Robert Martin',
-    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
-    born: 1952,
-  },
-  {
-    name: 'Martin Fowler',
-    id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
-    born: 1963
-  },
-  {
-    name: 'Fyodor Dostoevsky',
-    id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
-    born: 1821
-  },
-  { 
-    name: 'Joshua Kerievsky', // birthyear not known
-    id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
-  },
-  { 
-    name: 'Sandi Metz', // birthyear not known
-    id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
-  },
-]
+mongoose.set('useFindAndModify', false)
 
-/*
- * It would be more sensible to assosiate book and the author by saving 
- * the author id instead of the name to the book.
- * For simplicity we however save the author name.
-*/
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, 'useCreateIndex':true })
+  .then(() => {
+    logger.info('connected to MongoDB')
+  })
+  .catch((error) => {
+    logger.info('error connection to MongoDB:', error.message)
+  })
 
-let books = [
-  {
-    title: 'Clean Code',
-    published: 2008,
-    author: 'Robert Martin',
-    id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring']
-  },
-  {
-    title: 'Agile software development',
-    published: 2002,
-    author: 'Robert Martin',
-    id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
-    genres: ['agile', 'patterns', 'design']
-  },
-  {
-    title: 'Refactoring, edition 2',
-    published: 2018,
-    author: 'Martin Fowler',
-    id: "afa5de00-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring']
-  },
-  {
-    title: 'Refactoring to patterns',
-    published: 2008,
-    author: 'Joshua Kerievsky',
-    id: "afa5de01-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring', 'patterns']
-  },  
-  {
-    title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
-    published: 2012,
-    author: 'Sandi Metz',
-    id: "afa5de02-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring', 'design']
-  },
-  {
-    title: 'Crime and punishment',
-    published: 1866,
-    author: 'Fyodor Dostoevsky',
-    id: "afa5de03-344d-11e9-a414-719c6709cf3e",
-    genres: ['classic', 'crime']
-  },
-  {
-    title: 'The Demon',
-    published: 1872,
-    author: 'Fyodor Dostoevsky',
-    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
-    genres: ['classic', 'revolution']
-  },
-]
+
 
 const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     genres: [String!]! 
     id: ID!
   }
@@ -122,50 +54,84 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    hello: () => { return "world" },
-    authorCount: () => authors.length,
-    bookCount: () => books.length,
-    allBooks: (root, args) => {
-      let books1 = books
-      if(args.author) {
-       books1 = books.filter(b => b.author === args.author)
+    authorCount: () => Author.collection.countDocuments(),
+    bookCount: () => Book.collection.countDocuments(),
+    allBooks: async (root, args) => {
+      if(args.author && !args.genre) {
+        let author = await Author.findOne({ name:args.author })
+        if(!author) {
+          return null
+        } else {
+          return await Book.find({
+            'author': new mongoose.Types.ObjectId(author.id)
+          }).populate('author', { name: 1, born: 1 })
+        }
+      } else if (args.author && args.genre) {
+        let author = await Author.findOne({ name:args.author })
+        if(!author) {
+          return null
+        } else {
+          return await Book.find({
+            'author': new mongoose.Types.ObjectId(author.id),
+            'genres': {"$in": [args.genre] }
+          }).populate('author', { name: 1, born: 1 })
+        }
+      } else if (!args.author && args.genre) {
+        return await Book.find({
+          'genres': {"$in": [args.genre] }}).populate('author', { name: 1, born: 1 })
+      } else {
+        return await Book.find({}).populate('author', { name: 1, born: 1 })
       }
-      let books2 = books1
-      if(args.genre) {
-        books2 = books1.filter(b => b.genres.indexOf(args.genre)>-1)
-      }
-      return books2
     },
-    allAuthors: () => authors
+    allAuthors: () => Author.find({})
   },
   Author: {
-    bookCount: (root) => books.filter(b => b.author === root.name).length
+    bookCount: async (root) => {
+      const books = await Book.find({ 'author': new mongoose.Types.ObjectId(root.id) })
+      return books.length
+    }
   },
   Mutation: {
-    addBook: (root, args) => {
-      if (!authors.find(a => a.name === args.author)) {
-        const author = {
-          name: args.author,
-          id: uuidv1()
+    addBook: async (root, args) => {
+      try{
+        let author = await Author.findOne({ name:args.author })
+        if (!author) {
+          author = new Author({name:args.author})
+          author = await author.save()
         }
-        authors = authors.concat(author)
+        const book = new Book({
+          title: args.title,
+          author: author.id,
+          published: args.published,
+          genres: args.genres
+        })
+        const savedBook = await book.save()
+        return await Book.findById(savedBook.id).populate('author', { name: 1, born: 1 })
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
       }
-
-      const book = { ...args, id: uuidv1() }
-      books = books.concat(book)
-      return book
     },
-    editAuthor: (root, args) => {
-      const author = authors.find(a => a.name === args.name)
+    editAuthor: async (root, args) => {
+      let author = await Author.findOne({ name:args.name })
       if(!author){
         return null
       }
       const updatedAuthor = {
-        ...author,
+        name: author.name,
+        id: author.id,
         born: args.born
       }
-      authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
-      return updatedAuthor
+      try {
+        updatedAuthor2 =  await Author.findByIdAndUpdate(author.id, updatedAuthor,
+          { new: true, runValidators: false, context: 'query', useFindAndModify:false })
+        return updatedAuthor2
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
     }
   }
 }
