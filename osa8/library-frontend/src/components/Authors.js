@@ -63,6 +63,35 @@ const Authors = (props) => {
     return null
   }
 
+  const editBirthYear = () => {
+    if(props.token){
+      return(
+        <div>
+        <h2>Set birthyear</h2>
+        <form onSubmit={submit}>
+          <div>
+            <Select
+              value={ selectedAuthor }
+              onChange={ handleAuthorChange }
+              options={ data.allAuthors.map(a => 
+                         ({value: a.name, label:a.name}))
+              }
+            />
+          </div>
+          <div>
+            born
+            <input
+              type='number'
+              value={born}
+              onChange={({ target }) => setBorn(parseInt(target.value))}
+            />
+          </div>
+          <button type='submit'>update author</button>
+        </form>
+        </div>
+      )
+    }
+  }
   return (
     <div>
       <div>
@@ -93,28 +122,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <h2>Set birthyear</h2>
-      <form onSubmit={submit}>
-        <div>
-          <Select
-            value={ selectedAuthor }
-            onChange={ handleAuthorChange }
-            options={ data.allAuthors.map(a => 
-                       ({value: a.name, label:a.name}))
-            }
-          />
-        </div>
-        <div>
-          born
-          <input
-            type='number'
-            value={born}
-            onChange={({ target }) => setBorn(parseInt(target.value))}
-          />
-        </div>
-        <button type='submit'>update author</button>
-      </form>
-
+      {editBirthYear()}
     </div>
   )
 }

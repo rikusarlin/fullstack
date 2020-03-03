@@ -4,11 +4,10 @@ import { useMutation } from '@apollo/react-hooks'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
-  const [author, setAuhtor] = useState('')
+  const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
   // eslint-disable-next-line no-unused-vars
   const [timeout, setTimeout] = useState(null)
 
@@ -21,7 +20,10 @@ const NewBook = (props) => {
         genres: $genres
       ) {
         title
-        author
+        author {
+          name
+          id
+        }
         published
         genres
         id
@@ -29,15 +31,8 @@ const NewBook = (props) => {
     }
   `
 
-  const handleError = (error) => {
-    setErrorMessage(error.message)
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 10000)
-  }
-
   const [addBook] = useMutation(CREATE_BOOK, {
-    onError: handleError,
+    onError: props.handleError,
     refetchQueries: [{ query: props.allBooksQuery},{query: props.allAuthorsQuery }]
   })
 
@@ -50,7 +45,7 @@ const NewBook = (props) => {
 
     setTitle('')
     setPublished('')
-    setAuhtor('')
+    setAuthor('')
     setGenres([])
     setGenre('')
   }
@@ -66,13 +61,6 @@ const NewBook = (props) => {
 
   return (
     <div>
-      <div>
-        {errorMessage &&
-          <div style={{ color: 'red' }}>
-            {errorMessage}
-          </div>
-        }
-      </div>
       <form onSubmit={submit}>
         <div>
           title
@@ -85,7 +73,7 @@ const NewBook = (props) => {
           author
           <input
             value={author}
-            onChange={({ target }) => setAuhtor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
