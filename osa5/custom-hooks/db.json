@@ -1,0 +1,50 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are awesome!",
+      "id": 1
+    },
+    {
+      "content": "best feature ever <3",
+      "id": 2
+    },
+    {
+      "content": "Allright, now we're talking!",
+      "id": 3
+    },
+    {
+      "content": "Kyä etenee!",
+      "id": 4
+    },
+    {
+      "content": "Hei vaan!",
+      "id": 5
+    },
+    {
+      "content": "Ei tää niin paha",
+      "id": 6
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "Riku Sarlin",
+      "number": "040-5559114",
+      "id": 2
+    },
+    {
+      "name": "Elsa",
+      "number": "234734298",
+      "id": 3
+    },
+    {
+      "name": "Nyt skulaa",
+      "number": "934845",
+      "id": 4
+    }
+  ]
+}

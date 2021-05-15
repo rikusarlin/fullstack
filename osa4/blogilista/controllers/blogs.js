@@ -6,15 +6,11 @@ const logger = require('../utils/logger')
 
 blogsRouter.get('/', async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!request.token || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
-
-    const blogs = await Blog
-      .find({ 'user':decodedToken.id }).populate('user', { username: 1, name: 1 })
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+    //logger.info('In blogsRouter.get all, results:', blogs)
     response.json(blogs)
   } catch (error) {
+    //logger.info('In blogsRouter.error:', error)
     next(error)
   }
 })
@@ -45,7 +41,8 @@ blogsRouter.post('/', async (request, response, next) => {
     const newBlog = await blog.save()
     user.blogs = user.blogs.concat(newBlog._id)
     await user.save()
-    response.status(201).json(newBlog.toJSON())
+    const newBlog2 = await Blog.findById(newBlog._id).populate('user', { username: 1, name: 1 })
+    response.status(201).json(newBlog2.toJSON())
   } catch (error) {
     next(error)
   }
@@ -53,12 +50,7 @@ blogsRouter.post('/', async (request, response, next) => {
 
 blogsRouter.get('/:id', async (req, res, next) => {
   try {
-    const decodedToken = jwt.verify(req.token, process.env.SECRET)
-    if (!req.token || !decodedToken.id) {
-      return res.status(401).json({ error: 'token missing or invalid' })
-    }
-
-    const blog = await Blog.findById(req.params.id)
+    const blog = await Blog.findById(req.params.id).populate('user', { username: 1, name: 1 })
 
     if(blog){
       res.json(blog.toJSON())
@@ -89,7 +81,7 @@ blogsRouter.delete('/:id', async (req, res, next) => {
     if ( blogToDelete.user.toString() === tokenUser._id.toString() ) {
       await Blog.findByIdAndRemove(req.params.id).setOptions({ 'useFindAndModify':false })
       // delete blog from user direction, don't if this is actually necessary
-      tokenUser.blogs = tokenUser.blogs.filter(item => item !== blogToDelete._id)
+      await tokenUser.blogs.remove(req.params.id)
       await tokenUser.save()
       res.status(204).end()
     } else {
@@ -125,7 +117,27 @@ blogsRouter.put('/:id', async (req, res, next) => {
 
     const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog,
       { new: true, runValidators: false, context: 'query', useFindAndModify:false })
+    const updatedBlog2 = await Blog.findById(req.params.id).populate('user', { username: 1, name: 1 })
     if(updatedBlog){
+      res.json(updatedBlog2.toJSON())
+    } else {
+      res.status(404).end()
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+blogsRouter.post('/:id/comments', async (req, res, next) => {
+  try {
+    if(typeof req.body.comment === 'undefined'){
+      return res.status(400).json({ error:'comment is required' })
+    }
+    const blogToUpdate = await Blog.findById(req.params.id)
+    if(blogToUpdate){
+      blogToUpdate.comments.push(req.body.comment)
+      await blogToUpdate.save()
+      const updatedBlog = await Blog.findById(req.params.id).populate('user', { username: 1, name: 1 })
       res.json(updatedBlog.toJSON())
     } else {
       res.status(404).end()
