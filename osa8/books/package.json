@@ -1,0 +1,23 @@
+{
+  "name": "books",
+  "version": "1.0.0",
+  "description": "Fullstack open part 8.1 assignment",
+  "main": "index.js",
+  "scripts": {
+    "watch": "cross-env NODE_ENV=dev nodemon index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose"
+  },
+  "author": "Riku Sarlin",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "apollo-server": "^2.10.1",
+    "cross-env": "^7.0.0",
+    "dotenv": "^8.2.0",
+    "graphql": "^14.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.2",
+    "mongoose-unique-validator": "^2.0.3",
+    "nodemon": "^2.0.2",
+    "uuid": "^7.0.1"
+  }
+}

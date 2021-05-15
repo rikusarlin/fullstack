@@ -1,7 +1,15 @@
+const mongoose = require('mongoose')
 const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
 const User = require('../models/user')
+
+// Define console functions so that they exist...
+global.console = {
+  log: jest.fn(),
+  info: jest.fn(),
+  error: jest.fn()
+}
 
 const api = supertest(app)
 
@@ -107,4 +115,8 @@ describe('when there is initially one user at db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd.length).toBe(usersAtStart.length)
   })
+})
+
+afterAll(() => {
+  mongoose.connection.close()
 })

@@ -10,6 +10,13 @@ const api = supertest(app)
 var token
 var newUser_username
 
+// Define console functions so that they exist...
+global.console = {
+  log: jest.fn(),
+  info: jest.fn(),
+  error: jest.fn()
+}
+
 const randomStr = function (length) {
   let radom13chars = function () {
     return Math.random().toString(16).substring(2, 15)
@@ -21,6 +28,7 @@ const randomStr = function (length) {
 }
 
 beforeAll( async() => {
+  debugger;
   var newUser = helper.newUser
   newUser.username = randomStr(16)
   await api.post('/api/users')
@@ -57,6 +65,7 @@ describe('fetch all blogs', () => {
       .expect('Content-Type', /application\/json/)
   })
   test('all blogs are returned', async () => {
+    debugger;
     const response = await api.get('/api/blogs').set('Authorization', `bearer ${token}`)
     expect(response.body.length).toBe(helper.initialBlogs.length)
   })

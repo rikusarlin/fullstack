@@ -1,0 +1,38 @@
+{
+  "name": "patientor-backend",
+  "version": "1.0.0",
+  "description": "Fullstack open part 9 patientor backend",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "ts-node-dev src/index.ts",
+    "lint": "eslint --ext .ts .",
+    "start": "node build/src/index.js",
+    "prod": "tsc && node build/src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rikusarlin/fullstack.git"
+  },
+  "author": "Riku Sarlin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rikusarlin/fullstack/issues"
+  },
+  "homepage": "https://github.com/rikusarlin/fullstack#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.11",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "cors": "^2.8.5",
+    "eslint": "^7.26.0",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "uuid": "^8.3.2"
+  }
+}

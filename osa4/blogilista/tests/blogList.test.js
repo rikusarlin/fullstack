@@ -1,6 +1,11 @@
 const listHelper = require('../utils/list_helper')
 
-
+// Define console functions so that they exist...
+global.console = {
+  log: jest.fn(),
+  info: jest.fn(),
+  error: jest.fn()
+}
 const emptyBlogList = []
 
 const blogList1 = [
