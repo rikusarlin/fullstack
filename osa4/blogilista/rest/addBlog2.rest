@@ -1,7 +1,7 @@
 post http://localhost:3003/api/blogs
 Content-Type: application/json
 Accept: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVsc2Euc2FybGluIiwiaWQiOiI1ZGZjZDVjNzdmZjE1ZjRjNjRhNTU5ZmYiLCJpYXQiOjE1Nzg5Mzg2MTJ9.b4CvIfknUd6ZEvzs_ovjsDs6mamAHVF6DHI8PAlMVIg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVsc2Euc2FybGluIiwiaWQiOiI1ZjQ1NGZiOWE0OGFkZjQ2NTQzZWUzZjIiLCJpYXQiOjE1OTgzNzgxNDN9.PZN4XKjIUvgebssdRwagINIcHAvMSBSVu4B-5Otx1po
 
 {
     "title":"Use cases considered harmful",
