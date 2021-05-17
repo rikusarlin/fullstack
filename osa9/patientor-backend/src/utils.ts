@@ -43,6 +43,7 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isGender = (param: any): param is Gender => {
     return Object.values(Gender).includes(param);
 };
