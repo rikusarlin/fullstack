@@ -1,6 +1,9 @@
-import { NewPatient, Gender, Discharge, SickLeave, Entry, EntryType, HealthCheckRating } from './types';
+import { NewPatient, Gender, Discharge, SickLeave, Entry, EntryType, HealthCheckRating, NewHospitalEntry, NewOccupationalHealthcareEntry, NewHealthCheckEntry } from './types';
 
 type Fields = { name : unknown, ssn: unknown, occupation: unknown, gender: unknown, dateOfBirth: unknown, entries: Entry[] };
+type NewHospitalEntryFields = { description: unknown, specialist: unknown, date: unknown, diagnosisCodes: unknown[], discharge: unknown};
+type NewOccupationalHealthCareEntryFields = { description: unknown, specialist: unknown, date: unknown, diagnosisCodes: unknown[], sickLeave: unknown, employerName: unknown};
+type NewHealthCheckEntryFields = { description: unknown, specialist: unknown, date: unknown, diagnosisCodes: unknown[], healthCheckRating: unknown};
 type DischargeFields = { date: unknown, criteria: unknown};
 type SickLeaveFields = { startDate: unknown, endDate: unknown};
 
@@ -29,9 +32,46 @@ const toNewPatient = ({ name, ssn, occupation, gender, dateOfBirth, entries } : 
     dateOfBirth: parseDate(dateOfBirth, "date of birth"),
     entries: parseEntryArray(entries, "entries")
   };
-
   return newPatient;
 };
+
+const toNewHospitalEntry = ({ description, specialist, date, diagnosisCodes, discharge}:NewHospitalEntryFields): NewHospitalEntry => {
+  const newEntry: NewHospitalEntry = {
+    type: "Hospital",
+    description: parseString(description, "entry description"),
+    specialist: parseString(specialist, "entry specialist"),
+    date: parseDate(date, "entry date"),
+    diagnosisCodes: diagnosisCodes ? parseStringArray(diagnosisCodes, "diagnosis codes", false) : [],
+    discharge: parseDischarge(discharge, "discharge")
+  }
+  return newEntry;
+}; 
+
+const toNewOccupationalHealthCareEntry = ({ description, specialist, date, diagnosisCodes, sickLeave, employerName}:NewOccupationalHealthCareEntryFields): NewOccupationalHealthcareEntry => {
+  const newEntry: NewOccupationalHealthcareEntry = {
+    type: "OccupationalHealthcare",
+    description: parseString(description, "entry description"),
+    specialist: parseString(specialist, "entry specialist"),
+    date: parseDate(date, "entry date"),
+    diagnosisCodes: diagnosisCodes ? parseStringArray(diagnosisCodes, "diagnosis codes", false) : [],
+    sickLeave: parseSickLeave(sickLeave, "sick leave", false) ,
+    employerName: parseString(employerName, "employer name", false),
+  }
+  return newEntry;
+}; 
+
+const toNewHealthCheckEntry = ({ description, specialist, date, diagnosisCodes, healthCheckRating}:NewHealthCheckEntryFields): NewHealthCheckEntry => {
+  const newEntry: NewHealthCheckEntry = {
+    type: "HealthCheck",
+    description: parseString(description, "entry description"),
+    specialist: parseString(specialist, "entry specialist"),
+    date: parseDate(date, "entry date"),
+    diagnosisCodes: diagnosisCodes ? parseStringArray(diagnosisCodes, "diagnosis codes", false) : [],
+    healthCheckRating: parseHealthCheckRating(healthCheckRating)
+  }
+  return newEntry;
+}; 
+
 
 const parseEntryArray = (arrayValues: unknown[], arrayName: string, mandatory:boolean=true): Entry[] => {
   var entries:Entry[] = [];
@@ -91,8 +131,32 @@ const parseStringArray = (stringArrayValues: unknown[], stringArrayName: string,
   }
   if (!isPureArrayOfStrings(stringArrayValues)) {
       throw new Error(`Incorrect ${stringArrayName}`);
-    }
-    return stringArrayValues;
+  }
+  return stringArrayValues;
+};
+
+const parseDischarge = (dischargeValues: unknown, dischargeName: string, mandatory:boolean=true): Discharge => {
+  if (!dischargeValues && mandatory) {
+    throw new Error(`Missing ${dischargeName}`);
+  }
+  if(!isDischarge(dischargeValues)){
+    throw new Error(`Incorrect ${dischargeName}: ${dischargeValues}`);
+  }
+  const newDischarge: Discharge = {
+    date: parseDate(dischargeValues.date, "discharge date"),
+    criteria: parseString(dischargeValues.criteria, "discharge criteria")
+  };
+  return newDischarge;
+};
+
+const parseSickLeave = (values: unknown, name: string, mandatory:boolean=true): SickLeave => {
+  if (!values && mandatory) {
+    throw new Error(`Missing ${name}`);
+  }
+  if(!isSickLeave(values)){
+    throw new Error(`Incorrect ${name}: ${values}`);
+  }
+  return toSickLeave(values);
 };
 
 const parseString = (stringValue: unknown, stringName: string, mandatory:boolean=true): string => {
@@ -103,6 +167,14 @@ const parseString = (stringValue: unknown, stringName: string, mandatory:boolean
       throw new Error(`Incorrect ${stringName}: : ${stringValue}`);
   }
   return stringValue;
+};
+
+const isDischarge = (object: any): object is Discharge => {
+  return 'date' in object && 'criteria' in object;
+};
+
+const isSickLeave = (object: any): object is SickLeave => {
+  return 'startDate' in object && 'endDate' in object;
 };
 
 const isString = (text: unknown): text is string => {
@@ -168,4 +240,13 @@ const isHealthCheckRating= (param: any): param is HealthCheckRating => {
   return Object.values(HealthCheckRating).includes(param);
 };
 
-export default toNewPatient;
+/**
+ * Helper function for exhaustive type checking
+ */
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
+
+export {toNewPatient,toNewHospitalEntry, toNewOccupationalHealthCareEntry, toNewHealthCheckEntry, assertNever};
