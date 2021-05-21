@@ -121,8 +121,8 @@ const patients: Patient [] = rawPatients.map(obj => {
         ssn: obj.ssn,
         gender: obj.gender,
         occupation: obj.occupation,
-        entries: obj.entries!
-    }
+        entries: obj.entries ? obj.entries : []
+    };
     const object = toNewPatient(obj2) as Patient;
     object.id = obj.id;
     return object;

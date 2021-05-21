@@ -7,12 +7,12 @@ const getEntries = (): Patient[] => {
 };
 
 const getPatientEntries = (id:string): Entry[] | undefined => {
-  const patient:Patient|undefined = patients.find(patient => {return patient.id === id});
+  const patient:Patient|undefined = patients.find(patient => {return patient.id === id;});
   return patient ? patient.entries : []; 
 };
 
 const getPatientData = (id:string): Patient | undefined => {
-  return patients.find(patient => {return patient.id === id});
+  return patients.find(patient => {return patient.id === id;});
 };
 
 const getNonSensitiveEntries = (): NonSensitivePatient[] => {
@@ -25,34 +25,34 @@ const getNonSensitiveEntries = (): NonSensitivePatient[] => {
   }));
 };
 
-const addHospitalEntry = ( patient: Patient, entry: NewHospitalEntry ): HospitalEntry => {
+const addHospitalEntry = ( patient: Patient, entry: NewHospitalEntry ): Patient => {
   const newId:string = uuidv4();
   const newEntry:HospitalEntry = {
     id: newId,
     ...entry
-  }
-  patient.entries!.push(newEntry);
-  return newEntry;
+  };
+  patient.entries ? patient.entries.push(newEntry) : [newEntry];
+  return patient;
 };
 
-const addHealthCheckEntry = ( patient: Patient, entry: NewHealthCheckEntry ): HealthCheckEntry => {
+const addHealthCheckEntry = ( patient: Patient, entry: NewHealthCheckEntry ): Patient => {
   const newId:string = uuidv4();
   const newEntry:HealthCheckEntry = {
     id: newId,
     ...entry
-  }
-  patient.entries!.push(newEntry);
-  return newEntry;
+  };
+  patient.entries ? patient.entries.push(newEntry) : [newEntry];
+  return patient;
 };
 
-const addOccupationalHealthCareEntry = ( patient: Patient, entry: NewOccupationalHealthcareEntry ): OccupationalHealthcareEntry => {
+const addOccupationalHealthCareEntry = ( patient: Patient, entry: NewOccupationalHealthcareEntry ): Patient => {
   const newId:string = uuidv4();
   const newEntry:OccupationalHealthcareEntry = {
     id: newId,
     ...entry
-  }
-  patient.entries!.push(newEntry);
-  return newEntry;
+  };
+  patient.entries ? patient.entries.push(newEntry) : [newEntry];
+  return patient;
 };
 
 const addPatient = ( entry: NewPatient ): Patient => {
