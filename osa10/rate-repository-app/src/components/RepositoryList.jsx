@@ -4,11 +4,9 @@ import theme from '../../theme';
 import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({
-  bodyText: {
-    backgroundColor: theme.colors.bodyBackground,
-  },
   separator: {
-    height: 10,
+    height: 5,
+    backgroundColor: theme.colors.containerBackground,
   },
 });
 
@@ -70,7 +68,6 @@ const renderItem = ({ item }) => (
 const RepositoryList = () => {
   return (
     <FlatList
-      style={styles.bodyText}
       data={repositories}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={renderItem}

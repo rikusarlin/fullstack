@@ -1,12 +1,11 @@
 import React from 'react';
-import { Text, Pressable, Alert, StyleSheet } from 'react-native';
+import { Pressable, Alert, StyleSheet, View } from 'react-native';
 import theme from '../../theme';
+import Text from './Text';
 
 const styles = StyleSheet.create({
-    menuText: {
-      color: theme.colors.textMenu,
-      fontWeight: theme.fontWeights.bold,
-      fontSize: theme.fontSizes.menu,
+    menuContainer: {
+      backgroundColor: theme.colors.menuBackground,
       paddingRight: 20,
       justifyContent: 'space-around'
     }
@@ -14,11 +13,13 @@ const styles = StyleSheet.create({
 
 const MenuItem = ({ menuText }) => {
   return (
+    <View styles={styles.menuContainer}>
     <Pressable
       onPress={() => Alert.alert(`You pressed the menu option ${menuText}!`)}
     >
-      <Text style={styles.menuText}>{menuText}</Text>
+      <Text fontWeight="bold" color="textTertiary" fontSize="heading">{menuText}</Text>
     </Pressable>
+    </View>
   );
 };
 
