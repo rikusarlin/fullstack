@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingTop: 5,
     },
+    padLeftAndRight: {
+        paddingLeft: 5,
+        paddingRight: 5,
+    },
 });
   
   const Text = ({ color, fontSize, fontWeight, align, padded, style, ...props }) => {
@@ -53,6 +57,7 @@ const styles = StyleSheet.create({
       padded === 'top' && styles.padTop,
       padded === 'bottom' && styles.padBottom,
       padded === 'topAndBottom' && styles.padTopAndBottom,
+      padded === 'leftAndRight' && styles.padLeftAndRight,
       fontSize === 'subheading' && styles.fontSizeSubheading,
       fontSize === 'heading' && styles.fontSizeHeading,
       fontWeight === 'bold' && styles.fontWeightBold,
