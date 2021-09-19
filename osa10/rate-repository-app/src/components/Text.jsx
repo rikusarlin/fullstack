@@ -44,6 +44,12 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 5,
     },
+    padAll: {
+      paddingLeft: 5,
+      paddingRight: 5,
+      paddingBottom: 5,
+      paddingTop: 5,
+    },
 });
   
   const Text = ({ color, fontSize, fontWeight, align, padded, style, ...props }) => {
@@ -58,6 +64,7 @@ const styles = StyleSheet.create({
       padded === 'bottom' && styles.padBottom,
       padded === 'topAndBottom' && styles.padTopAndBottom,
       padded === 'leftAndRight' && styles.padLeftAndRight,
+      padded === 'all' && styles.padAll,
       fontSize === 'subheading' && styles.fontSizeSubheading,
       fontSize === 'heading' && styles.fontSizeHeading,
       fontWeight === 'bold' && styles.fontWeightBold,
