@@ -64,7 +64,7 @@ const useRepositories = () => {
     });
 
     const repositories = data ? data.repositories : undefined;
-    console.log(repositories);
+    //console.log(repositories);
   
     return {
       repositories,
