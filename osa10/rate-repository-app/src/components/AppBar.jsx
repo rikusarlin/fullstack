@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import MenuItem from './MenuItem';
 import theme from '../../theme';
+import useAuthorizedUser from '../hooks/useAuthorizedUser';
 
 const styles = StyleSheet.create({
   view: {
@@ -18,10 +19,18 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
+  const { authorizedUser } = useAuthorizedUser();
+  var signInOut;
+  if(authorizedUser === null){
+    signInOut = <MenuItem linkTo='/signin' menuText='Sign in '/>;
+  } else {
+    signInOut = <MenuItem linkTo='/signout' menuText='Sign out '/>;
+  }
+
   return <View style={styles.view}>
     <ScrollView horizontal contentContainerStyle={styles.container}>
       <MenuItem linkTo='/repositories' menuText='Repositories '/>
-      <MenuItem linkTo='/signin' menuText='Sign in '/>
+      {signInOut}
     </ScrollView>
   </View>;
 };

@@ -6,7 +6,8 @@ import FormikTextInput from './FormikTextInput';
 import Text from './Text';
 import theme from '../../theme.js';
 import useSignIn from '../hooks/useSignIn';
-import AuthStorage from '../utils/authStorage';
+import useAuthStorage from '../hooks/useAuthStorage';
+import { useHistory } from 'react-router-native';
 
 const initialValues = {
   username: '',
@@ -44,15 +45,15 @@ const SignInForm = ({ onSubmit }) => {
   return (
     <View styles={styles.formContainer}>
       <View styles={styles.fieldContainer}>
-        <FormikTextInput name="username" placeholder="Username" />
+        <FormikTextInput name='username' placeholder='Username' />
       </View>
       <View styles={styles.fieldContainer}>
-        <FormikTextInput name="password" placeholder="Password" secureTextEntry />
+        <FormikTextInput name='password' placeholder='Password' secureTextEntry />
       </View>
       <View styles={styles.fieldContainer}>
         <View style={styles.submitButton}>
           <Pressable onPress={onSubmit}>
-            <Text align="center" color='textTertiary' padded='all' fontWeight='bold'>Sign in</Text>
+            <Text align='center' color='textTertiary' padded='all' fontWeight='bold'>Sign in</Text>
           </Pressable>
         </View>
       </View>
@@ -62,7 +63,9 @@ const SignInForm = ({ onSubmit }) => {
 
 const SignIn = () => {
   const [signIn] = useSignIn();
-  const authStorage = new AuthStorage();
+  const authStorage = useAuthStorage();
+  const history = useHistory();
+
 
   const onSubmit = async (values) => {
     const username = values.username;
@@ -71,6 +74,7 @@ const SignIn = () => {
     try {
       await signIn({ username, password });
       console.log(`Auth token: ${await authStorage.getAccessToken()}`);
+      history.push('/repositories');
     } catch (e) {
       console.log(e);
     }
