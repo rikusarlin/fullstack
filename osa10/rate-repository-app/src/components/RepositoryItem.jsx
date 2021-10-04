@@ -54,21 +54,23 @@ const ItemHeader = ({fullName, description, language, ownerAvatarUrl}) => {
         <Image style={styles.avatar} source={{uri: ownerAvatarUrl}} />
       </View>
       <View style={styles.infoContainer}>
-        <Text testId="fullName" padded='bottom' fontWeight='bold' fontSize='subheading'>{fullName}</Text>
-        <Text testId="description" padded='bottom'>{description}</Text>
+        <Text testID="fullName" padded='bottom' fontWeight='bold' fontSize='subheading'>{fullName}</Text>
+        <Text testID="description" padded='bottom'>{description}</Text>
         <View style={styles.languageContainer}>
-          <Text testId="language" color='textTertiary'>{language}</Text>
+          <Text testID="language" color='textTertiary'>{language}</Text>
         </View>
       </View>
     </View>
   );
 };
 
-const DataItem = ({ number, text }) => {
+const DataItem = ({ name, number, text }) => {
+  const dataNumberTestId = `${name}-dataItemNumber`;
+  const dataTextTestId = `${name}-dataItemText`;
   return (
     <View>
-      <Text testId="dataItemNumber" padded='top' align='center' fontWeight='bold'>{number>1000 ? (Math.round(number/100)/10)+'k' : number}</Text>
-      <Text testId="dataItemText" padded='topAndBottom ' align='center'>{text}</Text>
+      <Text testID={dataNumberTestId} padded='top' align='center' fontWeight='bold'>{number>1000 ? (Math.round(number/100)/10)+'k' : number}</Text>
+      <Text testID={dataTextTestId} padded='topAndBottom ' align='center'>{text}</Text>
     </View>
   );
 };
@@ -80,10 +82,10 @@ const RepositoryItem = ({ fullName, description, language, forksCount, stargazer
       <ItemHeader fullName={fullName} description={description} language={language} 
        ownerAvatarUrl={ownerAvatarUrl}/>
       <View style={styles.dataContainer}>
-        <DataItem testId="stargazersCount" text='Stars' number={stargazersCount} />
-        <DataItem testId="forksCount" text='Forks' number={forksCount} />
-        <DataItem testId="reviewCount" text='Reviews' number={reviewCount} />
-        <DataItem testId="ratingAverage" text='Rating' number={ratingAverage} />
+        <DataItem name="stargazersCount" text='Stars' number={stargazersCount} />
+        <DataItem name="forksCount" text='Forks' number={forksCount} />
+        <DataItem name="reviewCount" text='Reviews' number={reviewCount} />
+        <DataItem name="ratingAverage" text='Rating' number={ratingAverage} />
       </View>
     </View>
   );

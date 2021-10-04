@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, getAllByTestId } from '@testing-library/react-native';
 import RepositoryListContainer from '../components/RepositoryListContainer';
 
 describe('RepositoryList', () => {
@@ -46,16 +46,35 @@ describe('RepositoryList', () => {
                 'WyJhc3luYy1saWJyYXJ5LnJlYWN0LWFzeW5jIiwxNTg4NjU2NzUwMDc2XQ==',
             },
           ],
-        };
+        };        
+
   
-        const { debug, getByTestId } = render(<RepositoryListContainer repositories={repositories} />);
+        const { debug, getAllByTestId } = render(<RepositoryListContainer repositories={repositories} />);
         debug();
-    
-        expect(
-            getByTestId('repositoryList')
-            .getAllByTestId('repositoryItem')[0]
-            .getByTestId('stargazersCount')
-            .getByTestId('dataItemNumber')).toHaveTextContent('21.9k');
-        });
+        
+        const fullNames = getAllByTestId('fullName');
+        const languages = getAllByTestId('language');
+        const descriptions = getAllByTestId('description');
+        const forks = getAllByTestId('forksCount-dataItemNumber');
+        const ratingAverages = getAllByTestId('ratingAverage-dataItemNumber');
+        const reviewCounts = getAllByTestId('reviewCount-dataItemNumber');
+        const stargazers = getAllByTestId('stargazersCount-dataItemNumber');
+
+        expect(fullNames[0]).toHaveTextContent('jaredpalmer/formik');
+        expect(fullNames[1]).toHaveTextContent('async-library/react-async');
+        expect(languages[0]).toHaveTextContent('TypeScript');
+        expect(languages[1]).toHaveTextContent('JavaScript');
+        expect(descriptions[0]).toHaveTextContent('Build forms in React, without the tears');
+        expect(descriptions[1]).toHaveTextContent('Flexible promise-based React data loader');
+        expect(forks[0]).toHaveTextContent('1.6k');
+        expect(forks[1]).toHaveTextContent('69');
+        expect(stargazers[0]).toHaveTextContent('21.9k');
+        expect(stargazers[1]).toHaveTextContent('1.8k');
+        expect(ratingAverages[0]).toHaveTextContent('88');
+        expect(ratingAverages[1]).toHaveTextContent('72');
+        expect(reviewCounts[0]).toHaveTextContent('3');
+        expect(reviewCounts[1]).toHaveTextContent('3');
+
+      });
     });
   });

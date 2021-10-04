@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 const renderItem = ({ item }) => (
-  <RepositoryItem testId="repositoryItem" id={item.id} fullName={item.fullName} description={item.description}
+  <RepositoryItem testID="repositoryItem" id={item.id} fullName={item.fullName} description={item.description}
     language={item.language} forksCount={item.forksCount} stargazersCount={item.stargazersCount}
     ratingAverage={item.ratingAverage} reviewCount={item.reviewCount} 
     ownerAvatarUrl={item.ownerAvatarUrl} />
@@ -27,7 +27,7 @@ const RepositoryListContainer = ({ repositories }) => {
     
     return (
       <FlatList
-        testId='repositorylist'
+        testID="repositorylist"
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
         renderItem={renderItem}

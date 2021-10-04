@@ -6,7 +6,7 @@ const RepositoryList = () => {
   const { repositories } = useRepositories();
 
   return (
-    <RepositoryListContainer
+    <RepositoryListContainer testId="repositoryContainer"
       repositories={repositories}
       />
   );
