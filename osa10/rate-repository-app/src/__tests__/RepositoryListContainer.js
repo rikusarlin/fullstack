@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, getAllByTestId } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import RepositoryListContainer from '../components/RepositoryListContainer';
 
 describe('RepositoryList', () => {
@@ -50,7 +50,7 @@ describe('RepositoryList', () => {
 
   
         const { debug, getAllByTestId } = render(<RepositoryListContainer repositories={repositories} />);
-        debug();
+        //debug();
         
         const fullNames = getAllByTestId('fullName');
         const languages = getAllByTestId('language');
