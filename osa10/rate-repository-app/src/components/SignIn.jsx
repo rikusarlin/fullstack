@@ -1,6 +1,4 @@
 import React from 'react';
-import { Formik } from 'formik';
-import * as yup from 'yup';
 import SignInForm from './SignInForm';
 import useSignIn from '../hooks/useSignIn';
 import useAuthStorage from '../hooks/useAuthStorage';
@@ -11,7 +9,6 @@ const SignIn = () => {
   const [signIn] = useSignIn();
   const authStorage = useAuthStorage();
   const history = useHistory();
-
 
   const onSubmit = async (values) => {
     const username = values.username;
