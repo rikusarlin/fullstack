@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   avatar: {
-    width: 45,
-    height: 45,
+    width: 50,
+    height: 50,
     borderRadius: 5,
   },
   avatarContainer: {

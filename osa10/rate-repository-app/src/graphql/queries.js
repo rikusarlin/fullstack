@@ -40,11 +40,24 @@ query repository($id: ID!){
     ratingAverage, 
     reviewCount,
     ownerAvatarUrl,
-    url
+    url,
+    reviews {
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          user {
+            id
+            username
+          }
+        }
+      }
+    }
   }
 }
 `;
-
 
 export const AUTHORIZED_USER = gql`
 query {

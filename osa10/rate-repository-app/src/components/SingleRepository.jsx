@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, FlatList } from 'react-native';
 import { useParams} from "react-router-native";
 import * as Linking from 'expo-linking';
 import theme from '../../theme';
 import Text from './Text';
 import RepositoryItem from './RepositoryItem';
+import ReviewItem from './ReviewItem';
 import useRepository from '../hooks/useRepository';
+import ItemSeparator from './ItemSeparator';
 
 const styles = StyleSheet.create({
   urlButton: {
@@ -22,35 +24,61 @@ const styles = StyleSheet.create({
   },
 });
 
-const SingleRepository = ()  => {
-  let { id } = useParams();
-  const {data, loading} = useRepository(id);
+const RepositoryInfo = ({ repository })  => {
 
-  if(loading){
-    return(
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  } else {
-    const repository = data.repository;
     const handlePress = () => {
       Linking.openURL(repository.url);
     };
+
+    const separator = (repository.reviews.edges.length>0) ? <ItemSeparator/> : <View/>;
   
     return (
       <View>
-        <RepositoryItem testID='repositorySingleItem' id={id} fullName={repository.fullName}
-        description={repository.description} language={repository.language} 
-        forksCount={repository.forksCount} 
-        stargazersCount={repository.stargazersCount} ratingAverage={repository.ratingAverage} 
-        reviewCount={repository.reviewCount} ownerAvatarUrl={repository.ownerAvatarUrl} />
+        <RepositoryItem testID='repositorySingleItem' 
+          id={repository.id}
+          fullName={repository.fullName}
+          description={repository.description} 
+          language={repository.language} 
+          forksCount={repository.forksCount} 
+          stargazersCount={repository.stargazersCount}
+          ratingAverage={repository.ratingAverage} 
+          reviewCount={repository.reviewCount}
+          ownerAvatarUrl={repository.ownerAvatarUrl} />
         <View style={styles.urlButton}>
           <Button testID='repositoryUrlButton' 
             onPress={handlePress} title='Open in GitHub' color='white'/>
         </View>
+        {separator}
       </View>
     );
+};
+
+const SingleRepository = () => {
+  let { id } = useParams();
+  const {repository, loading} = useRepository(id);
+
+  if(loading){
+    return(
+      <View>
+        <Text>Loading repository info...</Text>
+      </View>
+    );
+  } else {
+    const reviewNodes = repository.reviews
+      ? repository.reviews.edges.map(edge => edge.node)
+      : [];
+
+    console.log("SingleRepository, repository: "+JSON.stringify(repository));
+
+    return (
+      <FlatList
+        data={reviewNodes}
+        renderItem={({ item }) => <ReviewItem review={item} />}
+        keyExtractor={item => item.id}
+        ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+        ItemSeparatorComponent={ItemSeparator}
+      />
+  );
   }
 };
 

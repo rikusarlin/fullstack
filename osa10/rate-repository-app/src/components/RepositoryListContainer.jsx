@@ -1,18 +1,8 @@
 import React from 'react';
-import { FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { FlatList, Pressable } from 'react-native';
 import { Link } from 'react-router-native';
-import theme from '../../theme';
 import RepositoryItem from './RepositoryItem';
-
-const styles = StyleSheet.create({
-    separator: {
-      height: 5,
-      backgroundColor: theme.colors.containerBackground,
-    },
-  });
-  
-
-const ItemSeparator = () => <View style={styles.separator} />;
+import ItemSeparator from './ItemSeparator';
 
 const renderItem = ({ item }) => {
   const linkTo = '/repository/'+item.id;

@@ -7,8 +7,14 @@ const useRepository = (id) => {
     fetchPolicy: "cache-and-network"
   });
 
+  /*
+  if(data){
+    console.log("useRepository, data: "+JSON.stringify(data));
+  }
+  */
+
   return {
-    data,
+    repository: data ? data.repository : undefined,
     loading,
     error
   };
