@@ -68,6 +68,6 @@ const SignInForm = ({ onSubmit }) => {
       {({ handleSubmit }) => <SignInFormContents onSubmit={handleSubmit} />}
     </Formik>
   );
-}
+};
 
 export default SignInForm;

@@ -3,7 +3,7 @@ import useAuthStorage from '../hooks/useAuthStorage';
 import { useHistory } from 'react-router-native';
 import { useApolloClient } from '@apollo/client';
 
-const SignIn = () => {
+const SignOut = () => {
   const authStorage = useAuthStorage();
   const history = useHistory();
   const apolloClient = useApolloClient();
@@ -14,4 +14,4 @@ const SignIn = () => {
   return null;
 };
 
-export default SignIn;
+export default SignOut;

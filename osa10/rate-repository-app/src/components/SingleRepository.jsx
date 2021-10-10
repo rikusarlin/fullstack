@@ -68,7 +68,7 @@ const SingleRepository = () => {
       ? repository.reviews.edges.map(edge => edge.node)
       : [];
 
-    console.log("SingleRepository, repository: "+JSON.stringify(repository));
+    // console.log("SingleRepository, repository: "+JSON.stringify(repository));
 
     return (
       <FlatList
