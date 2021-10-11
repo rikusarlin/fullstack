@@ -8,12 +8,12 @@ const useCreateReview = () => {
     const authStorage = useAuthStorage();
     const apolloClient = useApolloClient();
 
-    const createRepoReview = async ({ repositoryName, ownwerName, rating, text }) => {
+    const createRepoReview = async ({ repositoryName, repositoryOwner, rating, text }) => {
         const token = await authStorage.getAccessToken();
         const payload = await createReview({ 
           variables: { 
             'repositoryName':repositoryName, 
-            'ownerName': ownwerName, 
+            'ownerName': repositoryOwner, 
             'rating': parseInt(rating), 
             'text': text },
           headers: {
