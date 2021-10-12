@@ -6,6 +6,7 @@ import RepositoryList from './RepositoryList';
 import Review from './Review';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
+import SignUp from './SignUp';
 import SingleRepository from './SingleRepository';
 
 const styles = StyleSheet.create({
@@ -34,6 +35,9 @@ const Main = () => {
           </Route>
           <Route path="/signout" exact>
             <SignOut />
+          </Route>
+          <Route path="/signup" exact>
+            <SignUp />
           </Route>
           <Redirect to="/repositories" />
         </Switch>

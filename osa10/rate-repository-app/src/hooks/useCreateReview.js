@@ -22,7 +22,7 @@ const useCreateReview = () => {
         });
     
         apolloClient.resetStore();
-        console.log("createReview, review:"+JSON.stringify(payload));
+        // console.log("createReview, review:"+JSON.stringify(payload));
 
         return payload;
       };
