@@ -57,14 +57,34 @@ const useRepositories = (sortBy, filterText) => {
 };
 */
 
-const useRepositories = () => {
+const useRepositories = (sortBy) => {
 
+  console.log("useRepositories, sortBy="+sortBy);
+
+    var orderBy;
+    var direction;
+    switch(sortBy){
+      case 'latest':
+        orderBy = 'CREATED_AT';
+        direction = 'ASC';
+        break;
+      case 'highest':
+        orderBy = 'RATING_AVERAGE';
+        direction = 'DESC';
+        break;
+      case 'lowest':
+        orderBy = 'RATING_AVERAGE';
+        direction = 'ASC';
+        break;
+    }
+
+    console.log("useRepositories, orderBy="+orderBy+", direction="+direction);
     const { data, loading,  ...result } = useQuery(GET_REPOSITORIES, {
       fetchPolicy: "cache-and-network",
+      variables: { orderBy, direction}
     });
 
     const repositories = data ? data.repositories : undefined;
-    //console.log(repositories);
   
     return {
       repositories,

@@ -1,6 +1,7 @@
 import React from 'react';
-import { FlatList, Pressable } from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 import { Link } from 'react-router-native';
+import {Picker} from '@react-native-picker/picker';
 import RepositoryItem from './RepositoryItem';
 import ItemSeparator from './ItemSeparator';
 
@@ -18,7 +19,25 @@ const renderItem = ({ item }) => {
   );
 };
 
-const RepositoryListContainer = ({ repositories }) => {
+const SortPicker = ({sortBy, setSortBy})  => {
+  return (
+    <View>
+      <Picker
+        selectedValue={sortBy}
+        onValueChange={(itemValue) => {
+          console.log("onValueChange, itemValue="+itemValue);
+          setSortBy(itemValue);
+        }
+      }>
+        <Picker.Item label="Latest" value="latest" />
+        <Picker.Item label="Highest rated repositories" value="highest" />
+        <Picker.Item label="Lowest rated repositories" value="lowest" />
+      </Picker>
+    </View>
+  );
+};
+
+const RepositoryListContainer = ({ repositories, sortBy, setSortBy }) => {
 
     const repositoryNodes = repositories
       ? repositories.edges.map(edge => edge.node)
@@ -29,6 +48,7 @@ const RepositoryListContainer = ({ repositories }) => {
         testID="repositorylist"
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
+        ListHeaderComponent={() => <SortPicker sortBy={sortBy} setSortBy={setSortBy}/>}
         renderItem={renderItem}
         />
     );

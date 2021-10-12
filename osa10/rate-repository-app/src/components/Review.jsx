@@ -88,7 +88,10 @@ const Review = () => {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+    <Formik 
+      initialValues={initialValues} 
+      onSubmit={onSubmit}
+      validationSchema={validationSchema}>
       {({ handleSubmit }) => <ReviewForm onSubmit={handleSubmit} />}
     </Formik>
   );
