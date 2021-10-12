@@ -1,7 +1,8 @@
 import React from 'react';
-import { FlatList, Pressable, View } from 'react-native';
+import { FlatList, Pressable, View} from 'react-native';
 import { Link } from 'react-router-native';
 import {Picker} from '@react-native-picker/picker';
+import { Searchbar } from 'react-native-paper';
 import RepositoryItem from './RepositoryItem';
 import ItemSeparator from './ItemSeparator';
 
@@ -19,28 +20,34 @@ const renderItem = ({ item }) => {
   );
 };
 
-const SortPicker = ({sortBy, setSortBy})  => {
+const renderHeader = (props)  => {
+  const onChangeSearch = query => props.setFilterBy(query);
+
   return (
     <View>
+      <Searchbar
+      placeholder="Search"
+      onChangeText={onChangeSearch}
+      value={props.filterBy}/>
+      <View>
       <Picker
-        selectedValue={sortBy}
+        selectedValue={props.sortBy}
         onValueChange={(itemValue) => {
           console.log("onValueChange, itemValue="+itemValue);
-          setSortBy(itemValue);
-        }
-      }>
+          props.setSortBy(itemValue);
+        }}>
         <Picker.Item label="Latest" value="latest" />
         <Picker.Item label="Highest rated repositories" value="highest" />
         <Picker.Item label="Lowest rated repositories" value="lowest" />
       </Picker>
+      </View>
     </View>
   );
 };
 
-const RepositoryListContainer = ({ repositories, sortBy, setSortBy }) => {
-
-    const repositoryNodes = repositories
-      ? repositories.edges.map(edge => edge.node)
+const RepositoryListContainer = (props) => {
+    const repositoryNodes = props.repositories
+      ? props.repositories.edges.map(edge => edge.node)
       : [];
     
     return (
@@ -48,7 +55,7 @@ const RepositoryListContainer = ({ repositories, sortBy, setSortBy }) => {
         testID="repositorylist"
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
-        ListHeaderComponent={() => <SortPicker sortBy={sortBy} setSortBy={setSortBy}/>}
+        ListHeaderComponent={renderHeader(props)}
         renderItem={renderItem}
         />
     );

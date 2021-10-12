@@ -1,87 +1,25 @@
 import { useQuery } from "@apollo/react-hooks";
 
 import { GET_REPOSITORIES } from "../graphql/queries";
-//import parseSortBy from "../utils/parseSortBy";
 
-/*
-const useRepositories = (sortBy, filterText) => {
-  const sortVariables = parseSortBy(sortBy);
-
-  const queryVariables = {
-    ...sortVariables,
-    searchKeyword: filterText,
-    first: 4,
-  };
-
-  const handleFetchMore = () => {
-    const canFetchMore =
-      !loading && data && data.repositories.pageInfo.hasNextPage;
-
-    if (!canFetchMore) {
-      return;
+const useRepositories = (sortBy, filterByDebounced) => {
+  console.log("useRepositories, sortBy="+sortBy+", searchKeyword="+filterByDebounced);
+  var vars = {};
+  switch(sortBy){
+    case 'latest':
+      vars = {"orderBy":"CREATED_AT", "orderDirection": "DESC", "searchKeyword":filterByDebounced};
+      break;
+    case 'highest':
+      vars = {"orderBy":"RATING_AVERAGE", "orderDirection": "DESC", "searchKeyword":filterByDebounced};
+      break;
+    case 'lowest':
+      vars = {"orderBy":"RATING_AVERAGE", "orderDirection": "ASC", "searchKeyword":filterByDebounced};
+      break;
     }
-
-    fetchMore({
-      query: GET_REPOSITORIES,
-      variables: {
-        after: data.repositories.pageInfo.endCursor,
-        ...queryVariables,
-      },
-      updateQuery: (previousResult, { fetchMoreResult }) => {
-        const nextResult = {
-          repositories: {
-            ...fetchMoreResult.repositories,
-            edges: [
-              ...previousResult.repositories.edges,
-              ...fetchMoreResult.repositories.edges,
-            ],
-          },
-        };
-
-        return nextResult;
-      },
-    });
-  };
-
-  const { data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORIES, {
-    variables: queryVariables,
-    fetchPolicy: "cache-and-network",
-  });
-
-  return {
-    repositories: data ? data.repositories : undefined,
-    fetchMore: handleFetchMore,
-    loading,
-    ...result,
-  };
-};
-*/
-
-const useRepositories = (sortBy) => {
-
-  console.log("useRepositories, sortBy="+sortBy);
-
-    var orderBy;
-    var direction;
-    switch(sortBy){
-      case 'latest':
-        orderBy = 'CREATED_AT';
-        direction = 'ASC';
-        break;
-      case 'highest':
-        orderBy = 'RATING_AVERAGE';
-        direction = 'DESC';
-        break;
-      case 'lowest':
-        orderBy = 'RATING_AVERAGE';
-        direction = 'ASC';
-        break;
-    }
-
-    console.log("useRepositories, orderBy="+orderBy+", direction="+direction);
+    console.log("useRepositories, variables: "+JSON.stringify(vars));
     const { data, loading,  ...result } = useQuery(GET_REPOSITORIES, {
       fetchPolicy: "cache-and-network",
-      variables: { orderBy, direction}
+      variables: vars
     });
 
     const repositories = data ? data.repositories : undefined;
