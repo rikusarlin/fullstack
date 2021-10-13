@@ -44,6 +44,12 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 5,
     },
+    padLeft: {
+      paddingLeft: 5,
+    },
+    padRight: {
+      paddingRight: 5,
+    },
     padAll: {
       paddingLeft: 5,
       paddingRight: 5,
@@ -60,8 +66,9 @@ const styles = StyleSheet.create({
       color === 'textTertiary' && styles.colorTextTertiary,
       align === 'center' && styles.alignCenter,
       padded === 'bottom' && styles.padBottom,
+      padded === 'left' && styles.padLeft,
+      padded === 'right' && styles.padRight,
       padded === 'top' && styles.padTop,
-      padded === 'bottom' && styles.padBottom,
       padded === 'topAndBottom' && styles.padTopAndBottom,
       padded === 'leftAndRight' && styles.padLeftAndRight,
       padded === 'all' && styles.padAll,

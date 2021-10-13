@@ -19,24 +19,28 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-  const { authorizedUser } = useAuthorizedUser();
+  const { authorizedUser } = useAuthorizedUser(false);
   var signInOut;
-  var createRepo;
+  var createReview;
   var signUp;
+  var myReviews;
   if(authorizedUser === null){
     signInOut = <MenuItem linkTo='/signin' menuText='Sign in '/>;
     signUp = <MenuItem linkTo='/signup' menuText='Sign up '/>;
-    createRepo = <MenuItem linkTo='/repositories' menuText=''/>;
+    createReview = <MenuItem linkTo='/repositories' menuText=''/>;
+    myReviews = <MenuItem linkTo='/myreviews' menuText=''/>;
   } else {
     signInOut = <MenuItem linkTo='/signout' menuText='Sign out '/>;
     signUp = <MenuItem linkTo='/repositories' menuText=''/>;
-    createRepo = <MenuItem linkTo='/review' menuText='Create a review '/>;
+    createReview = <MenuItem linkTo='/review' menuText='Create a review '/>;
+    myReviews = <MenuItem linkTo='/myreviews' menuText='My reviews '/>;
   }
 
   return <View style={styles.view}>
     <ScrollView horizontal contentContainerStyle={styles.container}>
       <MenuItem linkTo='/repositories' menuText='Repositories '/>
-      {createRepo}
+      {createReview}
+      {myReviews}
       {signUp}
       {signInOut}
     </ScrollView>

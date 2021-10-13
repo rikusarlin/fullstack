@@ -24,12 +24,20 @@ const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: 'column',
     flexGrow: 1,
-    paddingRight: 15,
     paddingLeft: 15,
+    flexShrink: 1,
   },
 });
 
-const ReviewItem = ({ review })  => {
+const ReviewItem = ({ review, showUsername, showReponame })  => {
+  var username = <Text/>;
+  var reponame = <Text/>;
+  if(showUsername){
+    username = <Text testID="username" padded='bottom' fontWeight='bold' fontSize='subheading'>{review.user.username}</Text>;
+  }
+  if(showReponame){
+    reponame = <Text testID="reponame" padded='bottom' fontWeight='bold' fontSize='subheading'>{review.repositoryId}</Text>;
+  }
   const formattedDate = format(parseISO(review.createdAt), 'dd.MM.yyyy');
   return (
     <View style={styles.container}>
@@ -37,9 +45,10 @@ const ReviewItem = ({ review })  => {
         <Text testID="rating" color='primary' fontWeight='bold' fontSize='heading'>{review.rating}</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Text testID="username" padded='bottom' fontWeight='bold' fontSize='subheading'>{review.user.username}</Text>
+        {username}
+        {reponame}
         <Text testID="createdAt" padded='bottom'>{formattedDate}</Text>
-        <Text testID="review" padded='bottom'>{review.text}</Text>
+        <Text testID="review" padded='right'>{review.text}</Text>
       </View>
     </View>
   );

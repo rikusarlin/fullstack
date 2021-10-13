@@ -71,6 +71,7 @@ query repository(
           text
           rating
           createdAt
+          repositoryId
           user {
             id
             username
@@ -83,10 +84,32 @@ query repository(
 `;
 
 export const AUTHORIZED_USER = gql`
-query {
+query getAuthorizedUser($includeReviews: Boolean = false) {
   authorizedUser {
     id
     username
+    reviews @include(if: $includeReviews) {
+    	totalCount,
+      pageInfo {
+        hasPreviousPage,
+        hasNextPage,
+        startCursor,
+        endCursor
+      }
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          repositoryId
+          user {
+            id
+            username
+          }
+        }
+      }
+    }
   }
 }
 `;
