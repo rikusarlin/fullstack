@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexGrow: 1,
     paddingLeft: 15,
+    paddingBottom: 15,
     flexShrink: 1,
   },
 });
