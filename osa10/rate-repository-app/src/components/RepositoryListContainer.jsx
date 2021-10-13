@@ -57,6 +57,8 @@ const RepositoryListContainer = (props) => {
         ItemSeparatorComponent={ItemSeparator}
         ListHeaderComponent={renderHeader(props)}
         renderItem={renderItem}
+        onEndReached={props.onEndReach}
+        onEndReachedThreshold={0.5}
         />
     );
   };

@@ -7,13 +7,18 @@ const RepositoryList = () => {
   const [sortBy, setSortBy] = useState('latest');
   const [filterBy, setFilterBy] = useState();
   const [filterByDebounced] = useDebounce(filterBy, 500);
+  const first = 8;
 
-  const { repositories } = useRepositories(sortBy, filterByDebounced);
+  const { repositories, fetchMore } = useRepositories(sortBy, filterByDebounced, first);
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer testId="repositoryContainer"
       repositories={repositories} sortBy={sortBy} setSortBy={setSortBy}
-      filterBy={filterBy} setFilterBy={setFilterBy}
+      filterBy={filterBy} setFilterBy={setFilterBy} onEndReach={onEndReach}
       />
   );
 };

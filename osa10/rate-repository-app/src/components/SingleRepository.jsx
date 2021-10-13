@@ -55,7 +55,13 @@ const RepositoryInfo = ({ repository })  => {
 
 const SingleRepository = () => {
   let { id } = useParams();
-  const {repository, loading} = useRepository(id);
+  const first = 8;
+
+  const {repository, fetchMore, loading} = useRepository(id, first);
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   if(loading){
     return(
@@ -77,6 +83,8 @@ const SingleRepository = () => {
         keyExtractor={item => item.id}
         ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
         ItemSeparatorComponent={ItemSeparator}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
   );
   }
