@@ -7,17 +7,18 @@ const useAuthorizedUser = (fetchReviews) => {
       "includeReviews": fetchReviews
     };
 
-    const { data, loading,  ...result } = useQuery(AUTHORIZED_USER, {
+    const { data, loading,  refetch, ...result } = useQuery(AUTHORIZED_USER, {
       fetchPolicy: "cache-and-network",
       variables: variables
     });
 
     const authorizedUser = data ? data.authorizedUser : undefined;
-    console.log("Authorized user: "+JSON.stringify(authorizedUser));
+    //console.log("Authorized user: "+JSON.stringify(authorizedUser));
   
     return {
       authorizedUser,
       loading,
+      refetch,
       ...result,
     };
   };

@@ -6,7 +6,7 @@ import useAuthorizedUser from '../hooks/useAuthorizedUser';
 import ItemSeparator from './ItemSeparator';
 
 const MyReviews = () => {
-  const {authorizedUser, loading} = useAuthorizedUser(true);
+  const {authorizedUser, loading, refetch} = useAuthorizedUser(true);
   if(loading){
     return(
       <View>
@@ -21,7 +21,7 @@ const MyReviews = () => {
     return (
       <FlatList
         data={reviewNodes}
-        renderItem={({ item }) => <ReviewItem review={item} showReponame/>}
+        renderItem={({ item }) => <ReviewItem review={item} showReponame refetch={refetch}/>}
         keyExtractor={item => item.id}
         ItemSeparatorComponent={ItemSeparator}
       />

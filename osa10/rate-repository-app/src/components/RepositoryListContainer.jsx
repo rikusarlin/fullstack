@@ -33,7 +33,7 @@ const renderHeader = (props)  => {
       <Picker
         selectedValue={props.sortBy}
         onValueChange={(itemValue) => {
-          console.log("onValueChange, itemValue="+itemValue);
+          //console.log("onValueChange, itemValue="+itemValue);
           props.setSortBy(itemValue);
         }}>
         <Picker.Item label="Latest" value="latest" />

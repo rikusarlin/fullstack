@@ -52,3 +52,10 @@ export const CREATE_USER = gql`
       }
 }`;
 
+export const DELETE_REVIEW = gql`
+mutation delReview($id: ID!) {
+  deleteReview(id: $id)
+}
+`;
+
+
