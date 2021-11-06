@@ -1,0 +1,39 @@
+Script started on Sun Nov  7 00:02:30 2021
+[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004hexitcurl http://localhost:3000/statistics[32D--location --request POST 'http://localhost:3000/todos' \[K
+--header 'Content-Type: application/json' \[K
+--data-raw '{"text": "Learn about life2"}'[K[A[A[A[34C[5C[27P[14Cst:3000/statistics[K[1B[K[1B[K[1B[K[3A[71C[32D--location --request POST 'http://localhost:3000/todos' \[K[1B--header 'Content-Type: application/json' \[K[1B--data-raw '{"text": "Learn about life1"}'[K[A[A[A[34Cdocker exec -it todo-backend_redis_1 bash[K[1B[K[1B[K[1B[K[3A[75C[?2004l[1B[?2004hroot@377aca5d6b3e:/data# [Kroot@377aca5d6b3e:/data# exitredis-cli
+[?2004l127.0.0.1:6379> [0K127.0.0.1:6379> exit[20C[0K127.0.0.1:6379> DEL added_todos[0;90;49m [key ...][0m[31C[0K127.0.0.1:6379> GET added_todos[0;90;49m [0m[31C[0K127.0.0.1:6379> exit[20C[0K127.0.0.1:6379> SET added_todos 9001[0;90;49m [EX seconds|PX milliseconds|EXAT timestamp|[0m[36C[0K127.0.0.1:6379> SET added_todos 9001[36C
+OK
+127.0.0.1:6379> [0K127.0.0.1:6379> SET added_todos 9001[0;90;49m [EX seconds|PX milliseconds|EXAT timestamp|[0m[36C[0K127.0.0.1:6379> exit[20C[0K127.0.0.1:6379> DEL added_todos[0;90;49m [key ...][0m[31C[0K127.0.0.1:6379> GET added_todos[0;90;49m [0m[31C[0K127.0.0.1:6379> GET added_todos[31C
+"9001"
+127.0.0.1:6379> [0K127.0.0.1:6379> e[17C[0K127.0.0.1:6379> ex[18C[0K127.0.0.1:6379> exi[19C[0K127.0.0.1:6379> exit[20C[0K127.0.0.1:6379> exit[20C
+[?2004hroot@377aca5d6b3e:/data# exit
+[?2004lexit
+[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004hdocker exec -it todo-backend_redis_1 bash[41Dexit                                     [37Dcurl http://localhost:3000/statistics[32D--location --request POST 'http://localhost:3000/todos' \[K
+--header 'Content-Type: application/json' \[K
+--data-raw '{"text": "Learn about life2"}'[K[3A[27P[14Cst:3000/statistics[K[1B[K[1B[K[1B[K[3A[71C[?2004l[1B{"addded_todos":9001}[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004hcurl http://localhost:3000/statistics[37Ddocker exec -it todo-backend_redis_1 bash[41Dexit                                     [37Dcurl http://localhost:3000/statistics[32D--location --request POST 'http://localhost:3000/todos' \[K
+--header 'Content-Type: application/json' \[K
+--data-raw '{"text": "Learn about life2"}'[K"}' 9"}'0"}'0"}'2"}'[?2004l
+{"_id":"6186fbb0b5f10e29334c7b46","text":"Learn about life9002","done":false,"__v":0}[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004hcurl --location --request POST 'http://localhost:3000/todos' \[K
+--header 'Content-Type: application/json' \[K
+--data-raw '{"text": "Learn about life9002"}'[K[A[A[A[34C[5C[27P[14Cst:3000/statistics[K[1B[K[1B[K[1B[K[3A[71C[?2004l[1B{"addded_todos":9002}[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004hcurl http://localhost:3000/statistics[32D--location --request POST 'http://localhost:3000/todos' \[K
+--header 'Content-Type: application/json' \[K
+--data-raw '{"text": "Learn about life9002"}'[K[A[A[A[34C[5C[27P[14Cst:3000/statistics[K[1B[K[1B[K[1B[K[3A[71C[37Ddocker exec -it todo-backend_redis_1 bash[41Dexit                                     [37Ddocker exec -it todo-backend_redis_1 bash[?2004l[1B[?2004hroot@377aca5d6b3e:/data# [Kroot@377aca5d6b3e:/data# exitredis-cli
+[?2004l127.0.0.1:6379> [0K127.0.0.1:6379> exit[20C[0K127.0.0.1:6379> GET added_todos[0;90;49m [0m[31C[0K127.0.0.1:6379> SET added_todos 9001[0;90;49m [EX seconds|PX milliseconds|EXAT timestamp|[0m[36C[0K127.0.0.1:6379> exit[20C[0K127.0.0.1:6379> DEL added_todos[0;90;49m [key ...][0m[31C[0K127.0.0.1:6379> DEL added_todos[31C
+(integer) 1
+127.0.0.1:6379> [0K127.0.0.1:6379> e[17C[0K127.0.0.1:6379> ex[18C[0K127.0.0.1:6379> exi[19C[0K127.0.0.1:6379> exit[20C[0K127.0.0.1:6379> exit[20C
+[?2004hroot@377aca5d6b3e:/data# redis-cli[5Pexitredis-cli[5Pexitredis-cli[5Pexitredis-cli_cli-cli[5Pexit t
+[?2004lexit
+[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004hdocker exec -it todo-backend_redis_1 bash[41Dcurl http://localhost:3000/statistics    [?2004l
+{"addded_todos":null}[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004hcurl http://localhost:3000/statistics[37Ddocker exec -it todo-backend_redis_1 bash[41Dcurl http://localhost:3000/statistics    [32D--location --request POST 'http://localhost:3000/todos' \[K
+--header 'Content-Type: application/json' \[K
+--data-raw '{"text": "Learn about life9002"}'[K"}' "}' "}' "}' 1"}'[?2004l
+{"_id":"6186fbdbb5f10e29334c7b48","text":"Learn about life1","done":false,"__v":0}[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004hcurl --location --request POST 'http://localhost:3000/todos' \[K
+--header 'Content-Type: application/json' \[K
+--data-raw '{"text": "Learn about life1"}'[K[A[A[A[34C[5C[27P[14Cst:3000/statistics[K[1B[K[1B[K[1B[K[3A[71C[?2004l[1B{"addded_todos":1}[1m[7m%[27m[1m[0m                                                                                ]7;file://MacBook-Pro.local/Users/Riku/git/fullstack/osa12/script-answers[0m[27m[24m[JRiku@MacBook-Pro script-answers % [K[?2004heexit[?2004l
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.
+
+Script done on Sun Nov  7 00:04:18 2021

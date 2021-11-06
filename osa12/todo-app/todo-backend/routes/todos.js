@@ -1,5 +1,6 @@
+const { setAsync, getAsync } = require('../redis');
 const express = require('express');
-const { Todo } = require('../mongo')
+const { Todo } = require('../mongo');
 const router = express.Router();
 
 /* GET todos listing. */
@@ -14,6 +15,12 @@ router.post('/', async (req, res) => {
     text: req.body.text,
     done: false
   })
+  const added_todos = await getAsync("added_todos")
+  var added_todos_int = 0;
+  if(added_todos){
+    added_todos_int = parseInt(added_todos);
+  }
+  await setAsync("added_todos", (added_todos_int+1).toString());
   res.send(todo);
 });
 
@@ -25,6 +32,12 @@ router.delete('/:id', async (req, res) => {
     return res.sendStatus(404);
   } else {
     await Todo.deleteOne(todo);
+    const added_todos = await getAsync("added_todos")
+    var added_todos_int = 0;
+    if(added_todos){
+      added_todos_int = parseInt(added_todos);
+    }
+    await setAsync("added_todos", (added_todos_int-1).toString());
     res.sendStatus(200);
   }
 });
