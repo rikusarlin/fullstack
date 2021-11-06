@@ -18,9 +18,13 @@ router.get('/', async (req, res) => {
 
 /* GET usage stats */
 router.get('/statistics', async (req, res) => {
-  const added_todos = parseInt(await getAsync("added_todos"));
+  const added_todos = await getAsync("added_todos")
+  var added_todos_int = 0;
+  if(added_todos){
+    added_todos_int = parseInt(added_todos);
+  }
   res.send({
-    "addded_todos": added_todos
+    "addded_todos": added_todos_int
   });
 });
 
