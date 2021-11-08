@@ -1,5 +1,7 @@
 FROM node:16
 
+ENV REACT_APP_BACKEND_URL=http://localhost:3000 PORT=8080
+
 WORKDIR /usr/src/app
 
 COPY . .
