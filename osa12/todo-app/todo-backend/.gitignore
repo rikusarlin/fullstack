@@ -61,7 +61,7 @@ typings/
 .next
 
 # Mongo data
-mongo_data
+mongo_data/
 
 # Redis data
-redis-data
+redis-data/

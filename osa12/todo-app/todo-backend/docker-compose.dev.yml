@@ -17,6 +17,8 @@ services:
       - ./redis_data:/data
   todo-backend-dev:
     image: todo-backend-dev
+    volumes:
+      - ./:/usr/src/app
     ports:
       - 3000:3000
     depends_on:

@@ -28,4 +28,12 @@ router.get('/statistics', async (req, res) => {
   });
 });
 
+/* GET greeting */
+router.get('/hello', async (req, res) => {
+  res.send({
+    "message": "Well, hi there you nerdy thing!"
+  });
+});
+
+
 module.exports = router;
